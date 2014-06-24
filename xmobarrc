@@ -1,15 +1,22 @@
-Config { font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
-       , bgColor = "black"
-       , fgColor = "grey"
-       , position = TopW L 90
-       , commands = [ Run Weather "EGPF" ["-t"," <tempF>F","-L","64","-H","77","--normal","green","--high","red","--low","lightblue"] 36000
-                    , Run Cpu ["-L","3","-H","50","--normal","green","--high","red"] 10
-                    , Run Memory ["-t","Mem: <usedratio>%"] 10
-                    , Run Swap [] 10
-                    , Run Date "%a %b %_d %l:%M" "date" 10
-                    , Run StdinReader
-                    ]
-       , sepChar = "%"
-       , alignSep = "}{"
-       , template = "%StdinReader% }{ %cpu% | %memory% * %swap%    <fc=#ee9a00>%date%</fc> | %EGPF%"
-       }
+Config
+    { font = "xft:Ubuntu:size=10:antialias=true"
+    , bgColor = "black"
+    , fgColor = "grey"
+    , position = TopSize L 90 20
+    , commands =
+        [ Run DynNetwork ["-L","0","-H","32","--normal","green","--high","red"] 10
+        , Run Cpu ["-L","3","-H","50" , "--normal","green","--high","red"] 10
+        , Run Memory ["-t","Mem: <usedratio>%"] 10
+        , Run Swap [] 10
+        , Run Date "%a %b %d %H:%M" "date" 10
+        --, Run Battery ["-L","50","-H","75","--high","green","--normal","yellow", "--low", "red", "--template", "bat:<left>"] 100
+        , Run StdinReader
+        ]
+    , sepChar = "%"
+    , alignSep = "}{"
+    , template = "%StdinReader% }{ %cpu%  |  %memory% * %swap%  |  %dynnetwork%    <fc=#ee9a00>%date%</fc>"
+    --, template = "%StdinReader% }{ %cpu%  |  %memory% * %swap%  |  %dynnetwork%  |  %battery%    <fc=#ee9a00>%date%</fc>"
+    }
+
+-- font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"
+-- vim:ft=haskell

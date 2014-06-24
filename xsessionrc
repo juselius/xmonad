@@ -4,13 +4,10 @@
 # Load resources
 #xrdb -merge .Xresources
 
+# Load keymap
 xmodmap ~/.Xmodmap
 
 # Set up an icon tray
-
-#trayer --edge top --align right --SetDockType true --SetPartialStrut true \
- #--expand true --width 10 --transparent false --tint 0x191970 --height 12 &
-
 trayer --edge top --align right --SetDockType true --SetPartialStrut true \
  --expand true --width 10 --transparent true --tint 0x000000 --height 20 &
 
@@ -31,8 +28,8 @@ if [ -x /usr/bin/gnome-power-manager ] ; then
    gnome-power-manager &
 fi
 
-volti &
-davmail &
 dropbox start -i
+davmail &
+volti &
 
 #exec xmonad

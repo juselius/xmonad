@@ -1,0 +1,39 @@
+README
+=======
+
+This xmonad setup works with (at least) Ubuntu 14.04. The defualt setup is
+based on plain xmonad together with xmobar. There are also configs for Gnome
+and Xfce4, but they are a bit shakey at times.
+
+Installation
+-------------
+
+::
+
+    $ sudo apt-get install xmonad xmobar libgh-xmonad-contrib-dev
+    $ sudo apt-get install trayer volti suckless-tools
+    $ git clone git@source.uit.no:jonas/xmonad .xmonad
+    $ ln -s .xmonad/xmobarrc .xmobarrc
+    $ ln -s .xmonad/xsessionrc .xsessionrc
+
+Edit ``.xsessionrc`` to your fit your needs. Log out and choose the ``XMonad``
+session.
+
+Themes
+-------
+
+To make things look nice, you may have to speciy the themes manually:
+
+``~/.gtkrc-2.0``::
+
+    gtk-theme-name = "Adwaita"
+    gtk-icon-theme-name = "Gnome-mono-dark"
+    gtk-font-name = "Ubuntu 11"
+
+``~/.config/gtk-3.0/settings.ini``::
+
+    [Settings]
+    gtk-application-prefer-dark-theme=0
+    gtk-theme-name = "Adwaita"
+    gtk-icon-theme-name = "Gnome-mono-dark"
+    gtk-font-name = "Ubuntu 11"

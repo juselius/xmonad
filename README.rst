@@ -28,7 +28,7 @@ To make things look nice, you may have to speciy the themes manually:
 ``~/.gtkrc-2.0``::
 
     gtk-theme-name = "Adwaita"
-    gtk-icon-theme-name = "Gnome-mono-dark"
+    gtk-icon-theme-name = "Ubuntu-mono-dark"
     gtk-font-name = "Ubuntu 11"
 
 ``~/.config/gtk-3.0/settings.ini``::
@@ -36,5 +36,5 @@ To make things look nice, you may have to speciy the themes manually:
     [Settings]
     gtk-application-prefer-dark-theme=0
     gtk-theme-name = "Adwaita"
-    gtk-icon-theme-name = "Gnome-mono-dark"
+    gtk-icon-theme-name = "Ubuntu-mono-dark"
     gtk-font-name = "Ubuntu 11"

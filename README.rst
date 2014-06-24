@@ -12,6 +12,7 @@ Installation
 
     $ sudo apt-get install xmonad xmobar libgh-xmonad-contrib-dev
     $ sudo apt-get install trayer volti suckless-tools
+    $ sudo apt-get install xfce4-terminal
     $ git clone git@source.uit.no:jonas/xmonad .xmonad
     $ ln -s .xmonad/xmobarrc .xmobarrc
     $ ln -s .xmonad/xsessionrc .xsessionrc

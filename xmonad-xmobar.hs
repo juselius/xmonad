@@ -68,10 +68,11 @@ myLayout =
         smartBorders $ Tall 1 (3/100) 0.5 ||| Full) $
     smartBorders (layoutHook defaultConfig)
 
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList []
-    {-[ ((modm, xK_F12), xmonadPrompt defaultXPConfig)-}
-    {-, ((modm, xK_F3 ), shellPrompt  defaultXPConfig)-}
-    {-]-}
+myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
+    [ ((modm, xK_p), spawn "dmenu_run -fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1")
+    --, ((modm, xK_F12), xmonadPrompt defaultXPConfig)
+    --, ((modm, xK_F3 ), shellPrompt  defaultXPConfig)
+    ]
 
 startup :: X ()
 startup = do

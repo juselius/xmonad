@@ -7,16 +7,18 @@
 # Load keymap
 xmodmap ~/.Xmodmap
 
+# Set the background color<
+xsetroot -solid '#888888'
+
 # Set up an icon tray
 trayer --edge top --align right --SetDockType true --SetPartialStrut true \
  --expand true --width 10 --transparent true --tint 0x000000 --height 20 &
 
-# Set the background color<
-
-xsetroot -solid '#888888'
+# settings daemon for DBus
+gnome-settings-daemon --replace &
+sleep 1
 
 # Fire up apps
-
 #xscreensaver -no-splash &
 
 if [ -x /usr/bin/nm-applet ] ; then
@@ -31,5 +33,10 @@ fi
 dropbox start -i
 davmail &
 volti &
+/opt/bin/spotify-notify.py -n -s &
+
+gnome-keyring-daemon --daemonize --login &
+/usr/lib/gnome-settings-daemon/gsd-printer &
+/usr/bin/gnome-screensaver --no-daemon &
 
 #exec xmonad

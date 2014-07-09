@@ -10,16 +10,16 @@ xmodmap ~/.Xmodmap
 # Set the background color<
 xsetroot -solid '#888888'
 
-# Set up an icon tray
+# start the composition manager (shadows, transparency, etc.)
+ #xcompmgr -n &
+
+# Set up an icon tray (should try stalonetray)
 trayer --edge top --align right --SetDockType true --SetPartialStrut true \
  --expand true --width 10 --transparent true --tint 0x000000 --height 20 &
 
 # settings daemon for DBus
 gnome-settings-daemon --replace &
 sleep 1
-
-# Fire up apps
-#xscreensaver -no-splash &
 
 if [ -x /usr/bin/nm-applet ] ; then
    nm-applet --sm-disable &
@@ -35,8 +35,17 @@ davmail &
 volti &
 /opt/bin/spotify-notify.py -n -s &
 
-gnome-keyring-daemon --daemonize --login &
 /usr/lib/gnome-settings-daemon/gsd-printer &
-/usr/bin/gnome-screensaver --no-daemon &
+gnome-screensaver &
+
+# Start Zeitgeist indexing service
+zeitgeist-daemon &
+
+# Start gnome-do application launcher
+gnome-do &
+
+conky &
+
+export SSH_ASKPASS="/usr/bin/ssh-askpass"
 
 #exec xmonad

@@ -109,6 +109,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
         spawn "dmenu_run -fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1")
     , ((modm .|. shiftMask,     xK_p), spawn "gnome-do")
     , ((modm .|. shiftMask,     xK_n), spawn "nautilus --no-desktop --browser")
+    , ((modm .|. shiftMask,     xK_d), spawn "rdesktop -u jju000 -d ad -g workarea -f -P -x lan kneip.cc.uit.no")
     , ((modm              , xK_Print), spawn "scrot -e 'mv $f ~/Downloads'")
     , ((modm .|. shiftMask, xK_Print), spawn "scrot -u -e 'mv $f ~/Downloads'")
     , ((modm .|. controlMask, xK_Print),

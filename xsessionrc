@@ -11,11 +11,12 @@ xmodmap ~/.Xmodmap
 xsetroot -solid '#888888'
 
 # start the composition manager (shadows, transparency, etc.)
- #xcompmgr -n &
+# xcompmgr -c &
 
 # Set up an icon tray (should try stalonetray)
 trayer --edge top --align right --SetDockType true --SetPartialStrut true \
- --expand true --width 10 --transparent true --tint 0x000000 --height 20 &
+ --expand true --width 10 --transparent true --tint 0x000000 --height 20 \
+ --distancefrom right --distance 450 &
 
 # settings daemon for DBus
 gnome-settings-daemon --replace &
@@ -42,7 +43,7 @@ gnome-screensaver &
 zeitgeist-daemon &
 
 # Start gnome-do application launcher
-gnome-do &
+#gnome-do &
 
 conky &
 

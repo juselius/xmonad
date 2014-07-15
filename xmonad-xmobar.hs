@@ -9,17 +9,9 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Reflect (reflectHoriz)
 import XMonad.Layout.IM
---import XMonad.Layout.SimpleFloat
---import XMonad.Layout.Spacing
---import XMonad.Layout.ResizableTile
---import XMonad.Layout.LayoutHints
---import XMonad.Layout.LayoutModifier
---import XMonad.Layout.Grid
-
-import XMonad.Util.Run (safeSpawn, spawnPipe)
+import XMonad.Util.Run (spawnPipe)
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
-import System.Environment (getEnvironment)
 import System.IO (hPutStrLn)
 
 main = do
@@ -47,8 +39,8 @@ myManageHook = composeAll . concat $
     , [className =? c --> doCenterFloat | c <- myFloats]
     , [className =? c --> doShift "1"   | c <- onWs1]
     , [className =? c --> doShift "2"   | c <- onWs2]
-    , [className =? c --> doShift "6"   | c <- onWs6]
     , [className =? c --> doShift "7"   | c <- onWs7]
+    , [className =? c --> doShift "8"   | c <- onWs8]
     , [className =? c --> doShift "9"   | c <- onWs9]
     , [appName   =? n --> doCenterFloat | n <- myNames]
     , [citrixReceiver --> doFloat]
@@ -57,8 +49,8 @@ myManageHook = composeAll . concat $
         -- workspaces
         onWs1   = myMail
         onWs2   = myWeb ++ myMusic
-        onWs6   = myChat
-        onWs7   = myGimp
+        onWs7   = myChat
+        onWs8   = myGimp
         onWs9   = myVm
 
         -- classnames
@@ -69,7 +61,7 @@ myManageHook = composeAll . concat $
         myChat   = ["Pidgin", "Buddy List", "Skype"]
         myGimp   = ["Gimp"]
         myVm     = ["VirtualBox", "Remmina"]
-        myFloats = myMovie ++
+        myFloats = myMovie ++ myVm ++
             [ "Xmessage"
             , "XFontSel"
             , "Do"
@@ -82,8 +74,7 @@ myManageHook = composeAll . concat $
             "stalonetray", "trayer"]
 
         -- names
-        name      = stringProperty "WM_NAME"
-        myNames   = ["bashrun", "Google Chrome Options", "Chromium Options"]
+        myNames = ["bashrun", "Google Chrome Options", "Chromium Options"]
 
         -- special apps
         citrixReceiver = className =? "sun-applet-PluginMain" <&&>
@@ -97,9 +88,9 @@ myLayout =
     onWorkspace "1"  mailLayout $
     onWorkspace "2"  webLayout $
     onWorkspace "3" threeCols $
-    onWorkspaces (map show [4..6]) defLayout $
-    onWorkspace "7" gimpLayout $
-    onWorkspaces (map show [8..9]) defLayout $
+    onWorkspaces (map show [4..7]) defLayout $
+    onWorkspace "8" gimpLayout $
+    onWorkspace "9" defLayout $
     smartBorders (layoutHook defaultConfig)
     where
         defLayout = desktopLayoutModifiers $

@@ -44,7 +44,7 @@ own_window no
 double_buffer yes
 
 # Minimum size of text area
-minimum_size 150 1
+#minimum_size 150 1
 
 # Draw shades?
 draw_shades yes
@@ -56,7 +56,7 @@ draw_outline no
 draw_borders yes
 
 # Stippled borders?
-stippled_borders 8
+stippled_borders 2
 
 # border margins
 border_margin 4

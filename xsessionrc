@@ -1,6 +1,8 @@
 #!/bin/bash
 # vim:ft=sh
- 
+
+#gnome-session --session=xmonad-session &
+
 # Load resources
 #xrdb -merge .Xresources
 
@@ -16,37 +18,42 @@ xsetroot -solid '#888888'
 # Set up an icon tray (should try stalonetray)
 trayer --edge top --align right --SetDockType true --SetPartialStrut true \
  --expand true --width 10 --transparent true --tint 0x000000 --height 20 \
- --distancefrom right --distance 475 &
-
-# settings daemon for DBus
-gnome-settings-daemon --replace &
-sleep 1
-
-if [ -x /usr/bin/nm-applet ] ; then
-   nm-applet --sm-disable &
-fi
-
-if [ -x /usr/bin/gnome-power-manager ] ; then
-   sleep 3
-   gnome-power-manager &
-fi
-
-dropbox start -i
-davmail &
-volti &
-/opt/bin/spotify-notify.py -n -s &
-
-/usr/lib/gnome-settings-daemon/gsd-printer &
-gnome-screensaver &
-
-# Start Zeitgeist indexing service
-zeitgeist-daemon &
-
-# Start gnome-do application launcher
-#gnome-do &
+ --distancefrom right --distance 500 &
 
 conky &
+/opt/bin/spotify-notify.py -n -s &
 
-export SSH_ASKPASS="/usr/bin/ssh-askpass"
+##
+## The remaining services have been migrated to gnome-session-manager
+## Configure using gnome-session-properties or
+## cp /usr/share/applications/service.desktop ~/.config/autostart
+##
 
-#exec xmonad
+# settings daemon for DBus
+#gnome-settings-daemon --replace &
+#sleep 1
+
+#if [ -x /usr/bin/nm-applet ] ; then
+   #nm-applet --sm-disable &
+#fi
+
+#if [ -x /usr/bin/gnome-power-manager ] ; then
+   #sleep 3
+   #gnome-power-manager &
+#fi
+
+##/usr/lib/gnome-settings-daemon/gsd-printer &
+##gnome-screensaver &
+
+## Start Zeitgeist indexing service
+#zeitgeist-daemon &
+
+## Start gnome-do application launcher
+#gnome-do &
+
+#dropbox start -i
+#davmail &
+#volti &
+
+#export SSH_ASKPASS="/usr/bin/ssh-askpass"
+

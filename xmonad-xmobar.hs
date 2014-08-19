@@ -56,7 +56,7 @@ myManageHook = composeAll . concat $
         -- classnames
         myMail   = ["Thunderbird", "Evolution"]
         myWeb    = ["Firefox", "Google-chrome", "Chromium", "Chromium-browser"]
-        myMovie  = ["MPlayer2", "Vlc"]
+        myMovie  = ["mplayer2", "Vlc"]
         myMusic  = ["Rhythmbox", "Spotify"]
         myChat   = ["Pidgin", "Buddy List", "Skype"]
         myGimp   = ["Gimp"]
@@ -114,6 +114,7 @@ myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
     , ((modm .|. shiftMask, xK_Print), spawn "scrot -u -e 'mv $f ~/Downloads'")
     , ((modm .|. controlMask, xK_Print),
         spawn "scrot -s -e 'mv $f ~/Downloads'")
+    , ((modm .|. shiftMask, xK_q), spawn "gnome-session-quit")
     ]
 
 startup :: X ()

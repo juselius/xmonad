@@ -21,6 +21,20 @@ Installation
 Edit ``.xsessionrc`` to your fit your needs. Log out and choose the ``XMonad``
 session.
 
+Using gnome-session
+-------------------
+
+Running xmonad under gnome-session has some advantages:
+    * Automatic startup of various services (settings manager, keyring daemon,
+    etc.)
+    * Controlled logout using gnome-session-quit
+    * Keyboard layout indicator/selector in the system tray
+
+To enable gnome-session (without gnome-panel)::
+
+    $ sudo cp .xmonad/xmonad-gnome-session.desktop /usr/share/xsessions/
+    $ sudo cp .xmonad/xmonad-nopanel.session /usr/share/gnome-session/sessions/
+
 Themes
 -------
 

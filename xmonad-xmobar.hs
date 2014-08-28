@@ -61,12 +61,14 @@ myManageHook = composeAll . concat $
         myChat   = ["Pidgin", "Buddy List", "Skype"]
         myGimp   = ["Gimp"]
         myVm     = ["VirtualBox", "Remmina"]
-        myFloats = myMovie ++ myVm ++
+        myFloats = myMovie ++
             [ "Xmessage"
             , "XFontSel"
             , "Do"
             , "Downloads"
             , "Nm-connection-editor"
+            , "VirtualBox"
+            --, "Remmina"
             ]
 
         -- resources
@@ -87,10 +89,10 @@ myManageHook = composeAll . concat $
 myLayout =
     onWorkspace "1"  mailLayout $
     onWorkspace "2"  webLayout $
-    onWorkspace "3" threeCols $
-    onWorkspaces (map show [4..7]) defLayout $
+    onWorkspaces (map show [3..6]) defLayout $
+    onWorkspace "7" threeCols $
     onWorkspace "8" gimpLayout $
-    onWorkspace "9" defLayout $
+    onWorkspace "9" fullLayout $
     smartBorders (layoutHook defaultConfig)
     where
         defLayout = desktopLayoutModifiers $
@@ -101,6 +103,8 @@ myLayout =
             smartBorders $ Full ||| Tall 1 (3/100) 0.65
         threeCols = desktopLayoutModifiers $ smartBorders $
                 ThreeCol 1 (3/100) (1/3) ||| Full ||| Tall 1 (3/100) 0.65
+        fullLayout = desktopLayoutModifiers $
+            noBorders $ Full ||| Mirror (Tall 1 (3/100) 0.8)
         gimpLayout  = avoidStruts $ withIM 0.11 (Role "gimp-toolbox") $
             reflectHoriz $ withIM 0.15 (Role "gimp-dock") Full
 

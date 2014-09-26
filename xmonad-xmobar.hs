@@ -68,6 +68,7 @@ myManageHook = composeAll . concat $
             , "Downloads"
             , "Nm-connection-editor"
             , "VirtualBox"
+            , "Launchbox"
             --, "Remmina"
             ]
 
@@ -102,7 +103,7 @@ myLayout =
         webLayout  = desktopLayoutModifiers $
             smartBorders $ Full ||| Tall 1 (3/100) 0.65
         threeCols = desktopLayoutModifiers $ smartBorders $
-                ThreeCol 1 (3/100) (1/3) ||| Full ||| Tall 1 (3/100) 0.65
+                ThreeCol 1 (3/100) (1/3) ||| Full ||| Tall 1 (2/100) 0.7
         fullLayout = desktopLayoutModifiers $
             noBorders $ Full ||| Mirror (Tall 1 (3/100) 0.8)
         gimpLayout  = avoidStruts $ withIM 0.11 (Role "gimp-toolbox") $

@@ -109,10 +109,11 @@ myLayout =
         gimpLayout  = avoidStruts $ withIM 0.11 (Role "gimp-toolbox") $
             reflectHoriz $ withIM 0.15 (Role "gimp-dock") Full
 
-myKeys conf@(XConfig {XMonad.modMask = modm}) = M.fromList
+myKeys (XConfig {XMonad.modMask = modm}) = M.fromList
     [ ((modm,                   xK_p),
         spawn "dmenu_run -fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1")
-    , ((modm .|. shiftMask,     xK_p), spawn "gnome-do")
+    , ((modm .|. shiftMask,     xK_p), spawn "/opt/bin/launchbox.py")
+    , ((modm .|. shiftMask,     xK_o), spawn "gnome-do")
     , ((modm .|. shiftMask,     xK_n), spawn "nautilus --no-desktop --browser")
     , ((modm .|. shiftMask,     xK_d), spawn "rdesktop -u jju000 -d ad -g workarea -f -P -x lan kneip.cc.uit.no")
     , ((modm              , xK_Print), spawn "scrot -e 'mv $f ~/Downloads'")

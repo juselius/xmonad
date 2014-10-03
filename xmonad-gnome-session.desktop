@@ -1,5 +1,5 @@
 [Desktop Entry]
-Name=XMonad GNOME session
+Name=XMonad with GNOME session
 Comment=XMonad under gnome session management
 Exec=gnome-session --session=xmonad-nopanel
 Icon=

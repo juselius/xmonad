@@ -27,9 +27,9 @@ main = do
         , terminal           = "xfce4-terminal"
         , startupHook        = startup
         , keys               = myKeys <+> keys defaultConfig
-        , borderWidth        = 3
-        , normalBorderColor  = "#444444"
-        , focusedBorderColor = "#0066aa"
+        , borderWidth        = 1
+        , normalBorderColor  = "gray"
+        , focusedBorderColor = "crimson"
         , workspaces = map show [1..9]
         }
 

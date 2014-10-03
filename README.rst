@@ -17,6 +17,7 @@ Installation
     $ git clone git@source.uit.no:jonas/xmonad .xmonad
     $ ln -s .xmonad/xmobarrc .xmobarrc
     $ ln -s .xmonad/xsessionrc .xsessionrc
+    $ ln -s .xmonad/conkyrc .conkyrc
 
 Edit ``.xsessionrc`` to your fit your needs. Log out and choose the ``XMonad``
 session.

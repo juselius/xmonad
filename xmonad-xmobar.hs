@@ -67,8 +67,8 @@ myManageHook = composeAll . concat $
             , "Do"
             , "Downloads"
             , "Nm-connection-editor"
-            , "VirtualBox"
             , "Launchbox"
+            --, "VirtualBox"
             --, "Remmina"
             ]
 
@@ -110,16 +110,15 @@ myLayout =
             reflectHoriz $ withIM 0.15 (Role "gimp-dock") Full
 
 myKeys (XConfig {XMonad.modMask = modm}) = M.fromList
-    [ ((modm,                   xK_p),
+    [ ((modm,               xK_p),
         spawn "dmenu_run -fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1")
-    , ((modm .|. shiftMask,     xK_p), spawn "/opt/bin/launchbox.py")
-    , ((modm .|. shiftMask,     xK_o), spawn "gnome-do")
-    , ((modm .|. shiftMask,     xK_n), spawn "nautilus --no-desktop --browser")
-    , ((modm .|. shiftMask,     xK_d), spawn "rdesktop -u jju000 -d ad -g workarea -f -P -x lan kneip.cc.uit.no")
+    , ((modm .|. shiftMask, xK_p), spawn "/opt/bin/launchbox.py")
+    , ((modm .|. shiftMask, xK_o), spawn "gnome-do")
+    , ((modm .|. shiftMask, xK_n), spawn "nautilus --no-desktop --browser")
+    , ((modm .|. shiftMask, xK_s), spawn "gnome-control-center")
     , ((modm              , xK_Print), spawn "scrot -e 'mv $f ~/Downloads'")
     , ((modm .|. shiftMask, xK_Print), spawn "scrot -u -e 'mv $f ~/Downloads'")
-    , ((modm .|. controlMask, xK_Print),
-        spawn "scrot -s -e 'mv $f ~/Downloads'")
+    , ((modm .|. controlMask, xK_Print), spawn "scrot -s -e 'mv $f ~/Downloads'")
     , ((modm .|. shiftMask, xK_q), spawn "gnome-session-quit")
     ]
 

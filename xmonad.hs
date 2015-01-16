@@ -10,6 +10,7 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Reflect (reflectHoriz)
 import XMonad.Layout.IM
 import XMonad.Util.Run (spawnPipe, safeSpawn)
+import qualified XMonad.Util.EZConfig as EZ
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import System.IO (hPutStrLn)
@@ -26,7 +27,7 @@ main = do
             }
         , manageHook         = myManageHook <+> manageHook defaultConfig
         , terminal           = "xfce4-terminal"
-        , keys               = myKeys <+> keys defaultConfig
+        , keys               = myKeys <+> mmKeys <+> keys defaultConfig
         , borderWidth        = 1
         , normalBorderColor  = "gray"
         , focusedBorderColor = "crimson"
@@ -125,6 +126,30 @@ myKeys (XConfig {XMonad.modMask = modm}) = M.fromList
     --, ((modm              , xK_Print), spawn "scrot -e 'mv $f ~/Downloads'")
     --, ((modm .|. shiftMask, xK_Print), spawn "scrot -u -e 'mv $f ~/Downloads'")
     --, ((modm .|. controlMask, xK_Print), spawn "scrot -s -e 'mv $f ~/Downloads'")
+    ]
+
+mmKeys = flip EZ.mkKeymap [
+      ("<XF86AudioMute>"
+        , spawn "amixer -q -D pulse sset Master toggle")
+    , ("<XF86AudioRaiseVolume>"
+        , spawn "amixer -q -D pulse sset Master 6000+ unmute")
+    , ("<XF86AudioLowerVolume>"
+        , spawn "amixer -q -D pulse sset Master 6000- unmute")
+    , ("<XF86AudioPlay>"
+        , spawn $ unwords
+        [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
+        , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+        ])
+    , ("<XF86AudioNext>"
+        , spawn $ unwords
+        [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
+        , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+        ])
+    , ("<XF86AudioPrevious>"
+        , spawn $ unwords
+        [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
+        , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+        ])
     ]
 
 startup :: X ()

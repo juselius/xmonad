@@ -1,3 +1,0 @@
-[GNOME Session]
-Name=XMonad without panel
-RequiredComponents=gnome-settings-daemon;xmonad

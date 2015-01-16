@@ -33,8 +33,9 @@ Running xmonad under gnome-session has some advantages:
 
 To enable gnome-session (without gnome-panel)::
 
-    $ sudo cp .xmonad/xmonad-gnome-session.desktop /usr/share/xsessions/
-    $ sudo cp .xmonad/xmonad-nopanel.session /usr/share/gnome-session/sessions/
+    $ sudo cp .xmonad/xmonad-session.desktop /usr/share/xsessions/
+    $ sudo cp .xmonad/xmonad-session /usr/bin/
+    $ sudo cp .xmonad/xmonad-plain.session /usr/share/gnome-session/sessions/
 
 Themes
 -------

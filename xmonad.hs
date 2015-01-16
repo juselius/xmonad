@@ -9,10 +9,11 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Reflect (reflectHoriz)
 import XMonad.Layout.IM
-import XMonad.Util.Run (spawnPipe)
+import XMonad.Util.Run (spawnPipe, safeSpawn)
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import System.IO (hPutStrLn)
+import System.Environment (getEnvironment)
 
 main = do
     xmproc <- spawnPipe "xmobar"
@@ -25,12 +26,13 @@ main = do
             }
         , manageHook         = myManageHook <+> manageHook defaultConfig
         , terminal           = "xfce4-terminal"
-        , startupHook        = startup
         , keys               = myKeys <+> keys defaultConfig
         , borderWidth        = 1
         , normalBorderColor  = "gray"
         , focusedBorderColor = "crimson"
         , workspaces = map show [1..9]
+        , startupHook        =
+            gnomeRegister2 >> startup >> startupHook defaultConfig
         }
 
 myManageHook = composeAll . concat $
@@ -127,9 +129,21 @@ myKeys (XConfig {XMonad.modMask = modm}) = M.fromList
 
 startup :: X ()
 startup = do
-    spawn "ssh-add -l >/dev/null; [ $? != 0 ] && cat /dev/null | ssh-add"
+    --spawn "ssh-add -l >/dev/null; [ $? != 0 ] && cat /dev/null | ssh-add"
     --spawn "nvidia-settings -l"
     --spawn "xsetroot -solid #888888"
     --xloadimage -onroot -fullscreen <path.to.image>
     return ()
+
+gnomeRegister2 :: MonadIO m => m ()
+gnomeRegister2 = io $ do
+    x <- lookup "DESKTOP_AUTOSTART_ID" `fmap` getEnvironment
+    whenJust x $ \sessionId -> safeSpawn "dbus-send"
+            ["--session"
+            ,"--print-reply=literal"
+            ,"--dest=org.gnome.SessionManager"
+            ,"/org/gnome/SessionManager"
+            ,"org.gnome.SessionManager.RegisterClient"
+            ,"string:xmonad"
+            ,"string:" ++ sessionId]
 

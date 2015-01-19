@@ -27,7 +27,7 @@ Using gnome-session
 
 Running xmonad under gnome-session has some advantages:
     * Automatic startup of various services (settings manager, keyring daemon,
-    etc.)
+      etc.)
     * Controlled logout using gnome-session-quit
     * Keyboard layout indicator/selector in the system tray
 

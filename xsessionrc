@@ -16,12 +16,12 @@ xsetroot -solid '#888888'
 # xcompmgr -c &
 
 # Set up an icon tray (should try stalonetray)
-trayer --edge top --align right --SetDockType true --SetPartialStrut true \
- --expand true --width 15 --transparent true --tint 0x000000 --height 20 \
- --distancefrom right --distance 500 &
+#trayer --edge top --align right --SetDockType true --SetPartialStrut true \
+ #--expand true --width 15 --transparent true --tint 0x000000 --height 20 \
+ #--distancefrom right --distance 500 &
 
 conky &
-/opt/bin/spotify-notify.py -n -s &
+#/opt/bin/spotify-notify.py -n -s &
 
 ##
 ## The remaining services have been migrated to gnome-session-manager

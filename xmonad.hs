@@ -10,6 +10,7 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Reflect (reflectHoriz)
 import XMonad.Layout.IM
 import XMonad.Util.Run (spawnPipe, safeSpawn)
+import XMonad.Hooks.EwmhDesktops
 import qualified XMonad.Util.EZConfig as EZ
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
@@ -18,7 +19,7 @@ import System.Environment (getEnvironment, getEnv)
 
 main = do
     xmproc <- spawnPipe "xmobar"
-    xmonad $ defaultConfig
+    xmonad $ ewmh defaultConfig
         { modMask            = mod4Mask
         , layoutHook         = myLayout
         , logHook = dynamicLogWithPP xmobarPP

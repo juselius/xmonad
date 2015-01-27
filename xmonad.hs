@@ -10,15 +10,16 @@ import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Reflect (reflectHoriz)
 import XMonad.Layout.IM
 import XMonad.Util.Run (spawnPipe, safeSpawn)
+import XMonad.Hooks.EwmhDesktops
 import qualified XMonad.Util.EZConfig as EZ
 import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import System.IO (hPutStrLn)
-import System.Environment (getEnvironment)
+import System.Environment (getEnvironment, getEnv)
 
 main = do
     xmproc <- spawnPipe "xmobar"
-    xmonad $ defaultConfig
+    xmonad $ ewmh defaultConfig
         { modMask            = mod4Mask
         , layoutHook         = myLayout
         , logHook = dynamicLogWithPP xmobarPP
@@ -154,10 +155,15 @@ mmKeys = flip EZ.mkKeymap [
 
 startup :: X ()
 startup = do
-    --spawn "ssh-add -l >/dev/null; [ $? != 0 ] && cat /dev/null | ssh-add"
-    --spawn "nvidia-settings -l"
+    user <- liftIO $ getEnv "USER"
     --spawn "xsetroot -solid #888888"
-    --xloadimage -onroot -fullscreen <path.to.image>
+    --spawn "xloadimage -onroot -fullscreen <path.to.image>"
+    spawn $ unwords -- restart trayer on M-q
+        [ "killall -u " ++ user ++ " trayer;"
+        , "exec trayer --edge top --align right --SetDockType true"
+        , "--SetPartialStrut true --expand true --width 15 --transparent true"
+        , "--tint 0x000000 --height 20 --distancefrom right --distance 750"
+        ]
     return ()
 
 gnomeRegister2 :: MonadIO m => m ()
@@ -171,4 +177,3 @@ gnomeRegister2 = io $ do
             ,"org.gnome.SessionManager.RegisterClient"
             ,"string:xmonad"
             ,"string:" ++ sessionId]
-

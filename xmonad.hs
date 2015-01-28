@@ -26,12 +26,17 @@ main = do
             { ppOutput = hPutStrLn xmproc
             , ppTitle = xmobarColor "green" "" . shorten 50
             }
-        , manageHook         = myManageHook <+> manageHook defaultConfig
+        , manageHook         =
+                myManageHook
+            <+> manageDocks
+            <+> manageHook defaultConfig
+        , handleEventHook    = docksEventHook <+> fullscreenEventHook
         , terminal           = "xfce4-terminal"
         , keys               = myKeys <+> mmKeys <+> keys defaultConfig
         , borderWidth        = 1
         , normalBorderColor  = "gray"
         , focusedBorderColor = "crimson"
+        , focusFollowsMouse  = False
         , workspaces = map show [1..9]
         , startupHook        =
             gnomeRegister2 >> startup >> startupHook defaultConfig
@@ -77,8 +82,7 @@ myManageHook = composeAll . concat $
             ]
 
         -- resources
-        myIgnores = ["desktop", "desktop_window", "notify-osd",
-            "stalonetray", "trayer"]
+        myIgnores = ["desktop", "desktop_window", "notify-osd", "stalonetray"]
 
         -- names
         myNames = ["bashrun", "Google Chrome Options", "Chromium Options"]

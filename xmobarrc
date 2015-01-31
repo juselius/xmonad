@@ -4,18 +4,29 @@ Config
     , fgColor = "grey"
     , position = TopSize L 100 20
     , commands =
-        [ Run DynNetwork ["-L","0","-H","32","--normal","green","--high","red"] 10
-        , Run Cpu ["-L","3","-H","50" , "--normal","green","--high","red"] 10
-        , Run Memory ["-t","Mem: <usedratio>%"] 10
-        , Run Swap [] 10
+        [ Run DynNetwork
+            [ "-L", "0", "-H", "32"
+            , "--normal", "green"
+            , "--high", "red"
+            ] 10
+        , Run Cpu ["-L", "3", "-H", "50" , "--normal", "green"
+            , "--high", "red"] 10
+        , Run Memory ["-t", "Mem: <usedratio>%"] 10
         , Run Date "%a %b %d %H:%M" "date" 10
-        --, Run Battery ["-L","50","-H","75","--high","green","--normal","yellow", "--low", "red", "--template", "bat:<left>"] 100
+        , Run Swap [] 10
+        , Run Battery
+            [ "-L", "30", "-H", "75"
+            ,"--high", "green"
+            , "--normal", "yellow"
+            , "--low", "red"
+            , "--template", "<timeleft> (<left>%)"
+            ] 100
         , Run StdinReader
         ]
     , sepChar = "%"
     , alignSep = "}{"
-    , template = "%StdinReader% }{ %cpu%  |  %memory% * %swap%  |  %dynnetwork%    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>    "
-    --, template = "%StdinReader% }{ %cpu%  |  %memory% * %swap%  |  %dynnetwork%  |  %battery%    <fc=#ee9a00>%date%</fc>"
+    --, template = "%StdinReader% }{ %cpu%  |  %memory% * %swap%  |  %dynnetwork%    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>    "
+    , template = "%StdinReader% }{ %cpu%  |  %memory%  |  %dynnetwork%  |  %battery%   <fc=#ee9a00>%date%</fc>"
     }
 
 -- font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"

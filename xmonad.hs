@@ -4,11 +4,6 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
-import XMonad.Layout.PerWorkspace
-import XMonad.Layout.NoBorders
-import XMonad.Layout.ThreeColumns
-import XMonad.Layout.Reflect (reflectHoriz)
-import XMonad.Layout.IM
 import XMonad.Util.Run (spawnPipe, safeSpawn)
 import XMonad.Hooks.EwmhDesktops
 import qualified XMonad.Util.EZConfig as EZ
@@ -16,12 +11,13 @@ import qualified XMonad.StackSet as W
 import qualified Data.Map as M
 import System.IO (hPutStrLn)
 import System.Environment (getEnvironment, getEnv)
+import DesktopLayouts
 
 main = do
     xmproc <- spawnPipe "xmobar"
     xmonad $ ewmh defaultConfig
         { modMask            = mod4Mask
-        , layoutHook         = myLayout
+        , layoutHook         = desktopLayouts
         , logHook = dynamicLogWithPP xmobarPP
             { ppOutput = hPutStrLn xmproc
             , ppTitle = xmobarColor "green" "" . shorten 50
@@ -95,31 +91,10 @@ myManageHook = composeAll . concat $
         myDoFullFloat :: ManageHook
         myDoFullFloat = doF W.focusDown <+> doFullFloat
 
-myLayout =
-    onWorkspace "1"  mailLayout $
-    onWorkspace "2"  webLayout $
-    onWorkspaces (map show [3..6]) defLayout $
-    onWorkspace "7" threeCols $
-    onWorkspace "8" gimpLayout $
-    onWorkspace "9" fullLayout $
-    smartBorders (layoutHook defaultConfig)
-    where
-        defLayout = desktopLayoutModifiers $
-            smartBorders $ Tall 1 (3/100) 0.5 ||| Full
-        mailLayout = desktopLayoutModifiers $
-            smartBorders $ Tall 1 (3/100) 0.65 ||| Full
-        webLayout  = desktopLayoutModifiers $
-            smartBorders $ Full ||| Tall 1 (3/100) 0.65
-        threeCols = desktopLayoutModifiers $ smartBorders $
-                ThreeCol 1 (3/100) (1/3) ||| Full ||| Tall 1 (2/100) 0.7
-        fullLayout = desktopLayoutModifiers $
-            noBorders $ Full ||| Mirror (Tall 1 (3/100) 0.8)
-        gimpLayout  = avoidStruts $ withIM 0.11 (Role "gimp-toolbox") $
-            reflectHoriz $ withIM 0.15 (Role "gimp-dock") Full
-
 myKeys (XConfig {XMonad.modMask = modm}) = M.fromList
-    [ ((modm,               xK_p),
-        spawn "dmenu_run -fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1")
+    [ ((modm,               xK_p), spawn (
+        "~/.cabal/bin/yeganesh -x -- "
+        ++ "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1"))
     , ((modm .|. shiftMask, xK_p), spawn "/opt/bin/launchbox.py")
     , ((modm .|. shiftMask, xK_o), spawn "gnome-do")
     , ((modm .|. shiftMask, xK_n), spawn "nautilus --no-desktop --browser")
@@ -160,14 +135,14 @@ mmKeys = flip EZ.mkKeymap [
 startup :: X ()
 startup = do
     user <- liftIO $ getEnv "USER"
-    --spawn "xsetroot -solid #888888"
-    --spawn "xloadimage -onroot -fullscreen <path.to.image>"
     spawn $ unwords -- restart trayer on M-q
         [ "killall -u " ++ user ++ " trayer;"
         , "exec trayer --edge top --align right --SetDockType true"
         , "--SetPartialStrut true --expand true --width 15 --transparent true"
         , "--tint 0x000000 --height 20 --distancefrom right --distance 750"
         ]
+    --spawn "xsetroot -solid #888888"
+    --spawn "xloadimage -onroot -fullscreen <path.to.image>"
     return ()
 
 gnomeRegister2 :: MonadIO m => m ()

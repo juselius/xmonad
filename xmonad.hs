@@ -28,7 +28,7 @@ main = do
             <+> manageHook defaultConfig
         , handleEventHook    = docksEventHook <+> fullscreenEventHook
         , terminal           = "xfce4-terminal"
-        , keys               = myKeys <+> mmKeys <+> keys defaultConfig
+        , keys               = myKeys <+> keys defaultConfig
         , borderWidth        = 1
         , normalBorderColor  = "gray"
         , focusedBorderColor = "crimson"
@@ -91,19 +91,13 @@ myManageHook = composeAll . concat $
         myDoFullFloat :: ManageHook
         myDoFullFloat = doF W.focusDown <+> doFullFloat
 
-myKeys (XConfig {XMonad.modMask = modm}) = M.fromList
-    [ ((modm,               xK_p), spawn ("dmenu_run "
-        ++ "| ~/.cabal/bin/yeganesh -x -- "
-        ++ "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1"))
-    , ((modm .|. shiftMask, xK_p), spawn "/opt/bin/launchbox.py")
-    , ((modm .|. shiftMask, xK_o), spawn "gnome-do")
-    , ((modm .|. shiftMask, xK_n), spawn "nautilus --no-desktop --browser")
-    , ((modm .|. shiftMask, xK_s), spawn "gnome-control-center")
-    , ((modm .|. shiftMask, xK_q), spawn "gnome-session-quit")
-    ]
-
-mmKeys = flip EZ.mkKeymap [
-      ("<XF86AudioMute>"
+myKeys = flip EZ.mkKeymap [
+      ("M-p", dmenu)
+    , ("S-M-p", spawn "gnome-do")
+    , ("S-M-n", spawn "nautilus --no-desktop --browser")
+    , ("S-M-s", spawn "gnome-control-center")
+    , ("S-M-q", spawn "gnome-session-quit")
+    , ("<XF86AudioMute>"
         , spawn "amixer -q -D pulse sset Master toggle")
     , ("<XF86AudioRaiseVolume>"
         , spawn "amixer -q -D pulse sset Master 6000+ unmute")
@@ -162,3 +156,8 @@ scrot opts = spawn $ unwords [
     , "$HOME/Downloads/screenshot-%Y-%m-%d-%H%M%S.png"
     ]
 
+dmenu = spawn $ unwords [
+      "dmenu_run"
+    --, "| ~/.cabal/bin/yeganesh -x --"
+    , "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1"
+    ]

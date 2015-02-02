@@ -92,8 +92,8 @@ myManageHook = composeAll . concat $
         myDoFullFloat = doF W.focusDown <+> doFullFloat
 
 myKeys (XConfig {XMonad.modMask = modm}) = M.fromList
-    [ ((modm,               xK_p), spawn (
-        "~/.cabal/bin/yeganesh -x -- "
+    [ ((modm,               xK_p), spawn ("dmenu_run "
+        ++ "| ~/.cabal/bin/yeganesh -x -- "
         ++ "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1"))
     , ((modm .|. shiftMask, xK_p), spawn "/opt/bin/launchbox.py")
     , ((modm .|. shiftMask, xK_o), spawn "gnome-do")

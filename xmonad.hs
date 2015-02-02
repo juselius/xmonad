@@ -32,7 +32,7 @@ main = do
         , borderWidth        = 1
         , normalBorderColor  = "gray"
         , focusedBorderColor = "crimson"
-        , focusFollowsMouse  = False
+        , focusFollowsMouse  = True
         , workspaces = map show [1..9]
         , startupHook        =
             gnomeRegister2 >> startup >> startupHook defaultConfig

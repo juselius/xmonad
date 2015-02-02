@@ -99,13 +99,7 @@ myKeys (XConfig {XMonad.modMask = modm}) = M.fromList
     , ((modm .|. shiftMask, xK_o), spawn "gnome-do")
     , ((modm .|. shiftMask, xK_n), spawn "nautilus --no-desktop --browser")
     , ((modm .|. shiftMask, xK_s), spawn "gnome-control-center")
-    , ((modm              , xK_Print), spawn "gnome-screenshot -a")
-    , ((modm .|. shiftMask, xK_Print), spawn "gnome-screenshot -w -B")
-    , ((modm .|. controlMask, xK_Print), spawn "gnome-screenshot")
     , ((modm .|. shiftMask, xK_q), spawn "gnome-session-quit")
-    --, ((modm              , xK_Print), spawn "scrot -e 'mv $f ~/Downloads'")
-    --, ((modm .|. shiftMask, xK_Print), spawn "scrot -u -e 'mv $f ~/Downloads'")
-    --, ((modm .|. controlMask, xK_Print), spawn "scrot -s -e 'mv $f ~/Downloads'")
     ]
 
 mmKeys = flip EZ.mkKeymap [
@@ -130,6 +124,9 @@ mmKeys = flip EZ.mkKeymap [
         [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
         , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
         ])
+    , ("<Print>", scrot "")
+    , ("S-<Print>", scrot "-s")
+    , ("C-<Print>", scrot "-u")
     ]
 
 startup :: X ()
@@ -156,3 +153,12 @@ gnomeRegister2 = io $ do
             ,"org.gnome.SessionManager.RegisterClient"
             ,"string:xmonad"
             ,"string:" ++ sessionId]
+
+scrot opts = spawn $ unwords [
+      "sleep 0.2;"
+    , "scrot "
+    , opts
+    , "-e 'xdg-open $f'"
+    , "$HOME/Downloads/screenshot-%Y-%m-%d-%H%M%S.png"
+    ]
+

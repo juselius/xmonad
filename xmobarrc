@@ -15,7 +15,7 @@ Config
         , Run Date "%a %b %d %H:%M" "date" 10
         , Run Swap [] 10
         , Run Battery
-            [ "-L", "30", "-H", "75"
+            [ "-L", "25", "-H", "40"
             ,"--high", "green"
             , "--normal", "yellow"
             , "--low", "red"

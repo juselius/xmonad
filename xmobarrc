@@ -14,8 +14,8 @@ Config
         ]
     , sepChar = "%"
     , alignSep = "}{"
-    , template = "%StdinReader% }{ %cpu%  |  %memory% |  %dynnetwork%    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>    "
-    --, template = "%StdinReader% }{ %cpu%  |  %memory%  |  %dynnetwork%  |  %battery%    <fc=#ee9a00>%date%</fc>"
+    , template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory% |  %dynnetwork%</action>    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>    "
+    --, template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory%  |  %dynnetwork%</action>  |  <action=gnome-power-statistics>%battery%</action>    <fc=#ee9a00>%date%</fc>"
     }
 
 -- font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"

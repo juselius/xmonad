@@ -8,7 +8,7 @@
 [ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 
 # start the composition manager (shadows, transparency, etc.)
-xcompmgr -c &
+xcompmgr -cC &
 
 # Set the background color<
 #xsetroot -solid '#888888'

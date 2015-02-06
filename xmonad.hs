@@ -92,7 +92,7 @@ myManageHook = composeAll . concat $
         myDoFullFloat = doF W.focusDown <+> doFullFloat
 
 myKeys = flip EZ.mkKeymap [
-      ("M-p", dmenu)
+      ("M-p", spawn dmenu)
     , ("S-M-p", spawn "gnome-do")
     , ("S-M-n", spawn "nautilus --no-desktop --browser")
     , ("S-M-s", spawn "gnome-control-center")
@@ -156,8 +156,7 @@ scrot opts = spawn $ unwords [
     , "$HOME/Downloads/screenshot-%Y-%m-%d-%H%M%S.png"
     ]
 
-dmenu = spawn $ unwords [
-      "dmenu_run"
-    --, "| ~/.cabal/bin/yeganesh -x --"
-    , "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1"
+dmenu = unwords [
+      "exec `~/.cabal/bin/yeganesh -x --"
+    , "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1`"
     ]

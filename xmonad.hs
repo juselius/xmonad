@@ -93,7 +93,7 @@ myManageHook = composeAll . concat $
 
 myKeys = flip EZ.mkKeymap [
       ("M-p", spawn dmenu)
-    , ("S-M-p", spawn "gnome-do")
+    , ("S-M-p", spawn "/opt/bin/launchbox.py")
     , ("S-M-n", spawn "nautilus --no-desktop --browser")
     , ("S-M-s", spawn "gnome-control-center")
     , ("S-M-q", spawn "gnome-session-quit")

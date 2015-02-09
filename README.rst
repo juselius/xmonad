@@ -12,13 +12,18 @@ Installation
 
     $ sudo apt-get install xmonad xmobar libghc-xmonad-contrib-dev
     $ sudo apt-get install trayer volti suckless-tools
-    $ sudo apt-get install xcompmgr scrot gnome-do conky gsimplecal
+    $ sudo apt-get install xcompmgr scrot conky gsimplecal
     $ sudo apt-get install xfce4-terminal
-    $ git clone git@source.uit.no:jonas/xmonad .xmonad
+
+    $ git clone git@source.uit.no:jonas/xmonad ~/.xmonad
     $ ln -s .xmonad/xmobarrc .xmobarrc
     $ ln -s .xmonad/xsessionrc .xsessionrc
     $ ln -s .xmonad/conkyrc .conkyrc
+
     $ cabal install yeganesh
+
+    $ cp launchbox/launchbox.py /opt/bin
+    $ cd /tmp; git clone https://github.com/olemb/launchbox.git
 
 Edit ``.xsessionrc`` to your fit your needs. Log out and choose the ``XMonad``
 session.

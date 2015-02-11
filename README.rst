@@ -1,9 +1,9 @@
 README
 =======
 
-This xmonad setup works with (at least) Ubuntu 14.10. The defualt setup is
+This xmonad setup works with (at least) Ubuntu 14.10. The default setup is
 based on plain xmonad together with xmobar. There are also configs for Gnome
-and Xfce4, but they are a bit shakey at times.
+and Xfce4, but they are a bit shaky at times.
 
 Installation
 -------------
@@ -28,25 +28,26 @@ Installation
 Edit ``.xsessionrc`` to your fit your needs. Log out and choose the ``XMonad``
 session.
 
-Using gnome-session
+Using unity/gnome-session
 -------------------
 
-Running xmonad under gnome-session has some advantages:
+Running xmonad under session management has some advantages:
     * Automatic startup of various services (settings manager, keyring daemon,
       etc.)
     * Controlled logout using gnome-session-quit
     * Keyboard layout indicator/selector in the system tray
 
-To enable gnome-session (without gnome-panel)::
+To enable session management (without gnome-panel)::
 
     $ sudo cp .xmonad/xmonad-session.desktop /usr/share/xsessions/
-    $ sudo cp .xmonad/xmonad-session /usr/bin/
     $ sudo cp .xmonad/xmonad-plain.session /usr/share/gnome-session/sessions/
+    $ sudo cp .xmonad/xmonad-plain.desktop /usr/share/applications/
+    $ sudo cp .xmonad/xmonad-session /usr/bin/
 
 Themes
 -------
 
-To make things look nice, you may have to speciy the themes manually:
+To make things look nice, you may have to specify the themes manually:
 
 ``~/.gtkrc-2.0``::
 

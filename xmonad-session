@@ -1,2 +1,3 @@
 #! /bin/sh
+PATH="$HOME/.cabal/bin:$PATH"
 exec gnome-session --session xmonad-plain "$@"

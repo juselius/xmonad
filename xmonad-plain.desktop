@@ -1,6 +1,6 @@
 [Desktop Entry]
 Type=Application
-Name=Xmonad
+Name=Plain Xmonad
 Exec=xmonad
 NoDisplay=true
 X-GNOME-WMName=Xmonad

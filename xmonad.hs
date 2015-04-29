@@ -5,7 +5,7 @@ import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.SetWMName
-import XMonad.Hooks.PositionStoreHooks
+import XMonad.Hooks.Place
 import XMonad.Util.Run (spawnPipe, safeSpawn)
 import XMonad.Hooks.EwmhDesktops
 import qualified XMonad.Util.EZConfig as EZ
@@ -21,7 +21,7 @@ main = do
         { modMask     = mod4Mask
         , layoutHook  = desktopLayouts
         , manageHook  =
-            positionStoreManageHook Nothing <+>
+            placeHook (withGaps (20, 20, 20, 20) (smart (0.5, 0.5))) <+>
             myManageHook <+>
             manageDocks <+>
             manageHook defaultConfig
@@ -34,7 +34,9 @@ main = do
             gnomeRegister2 >>
             startup >>
             startupHook defaultConfig
-        , handleEventHook    = docksEventHook <+> fullscreenEventHook
+        , handleEventHook    =
+            docksEventHook <+>
+            fullscreenEventHook
         , terminal           = "xfce4-terminal"
         , keys               = myKeys <+> keys defaultConfig
         , borderWidth        = 1

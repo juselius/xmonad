@@ -4,6 +4,8 @@ import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks
+import XMonad.Hooks.SetWMName
+import XMonad.Hooks.PositionStoreHooks
 import XMonad.Util.Run (spawnPipe, safeSpawn)
 import XMonad.Hooks.EwmhDesktops
 import qualified XMonad.Util.EZConfig as EZ
@@ -16,16 +18,22 @@ import DesktopLayouts
 main = do
     xmproc <- spawnPipe "xmobar"
     xmonad $ ewmh defaultConfig
-        { modMask            = mod4Mask
-        , layoutHook         = desktopLayouts
-        , logHook = dynamicLogWithPP xmobarPP
+        { modMask     = mod4Mask
+        , layoutHook  = desktopLayouts
+        , manageHook  =
+            positionStoreManageHook Nothing <+>
+            myManageHook <+>
+            manageDocks <+>
+            manageHook defaultConfig
+        , logHook     = dynamicLogWithPP xmobarPP
             { ppOutput = hPutStrLn xmproc
-            , ppTitle = xmobarColor "green" "" . shorten 50
+            , ppTitle  = xmobarColor "green" "" . shorten 50
             }
-        , manageHook         =
-                myManageHook
-            <+> manageDocks
-            <+> manageHook defaultConfig
+        , startupHook =
+            setWMName "LG3D" >>  -- workaround for java
+            gnomeRegister2 >>
+            startup >>
+            startupHook defaultConfig
         , handleEventHook    = docksEventHook <+> fullscreenEventHook
         , terminal           = "xfce4-terminal"
         , keys               = myKeys <+> keys defaultConfig
@@ -34,8 +42,6 @@ main = do
         , focusedBorderColor = "crimson"
         , focusFollowsMouse  = True
         , workspaces = map show [1..9]
-        , startupHook        =
-            gnomeRegister2 >> startup >> startupHook defaultConfig
         }
 
 myManageHook = composeAll . concat $

@@ -96,7 +96,8 @@ myKeys = flip EZ.mkKeymap [
     , ("S-M-p", spawn "/opt/bin/launchbox.py")
     , ("S-M-n", spawn "nautilus --no-desktop --browser")
     , ("S-M-s", spawn "gnome-control-center")
-    , ("S-M-q", spawn "gnome-session-quit")
+    -- , ("S-M-q", spawn "killall -s 15 -u jonas gnome-session")
+    , ("S-M-q", spawn "gnome-session-quit --force")
     , ("<XF86AudioMute>"
         , spawn "amixer -q -D pulse sset Master toggle")
     , ("<XF86AudioRaiseVolume>"
@@ -130,7 +131,7 @@ startup = do
         [ "killall -u " ++ user ++ " trayer;"
         , "exec trayer --edge top --align right --SetDockType true"
         , "--SetPartialStrut true --expand true --width 15 --transparent true"
-        , "--tint 0x000000 --height 20 --distancefrom right --distance 750"
+        , "--alpha 0 --tint 0x000000 --height 20 --distancefrom right --distance 750"
         ]
     --spawn "xsetroot -solid #888888"
     --spawn "xloadimage -onroot -fullscreen <path.to.image>"
@@ -157,6 +158,6 @@ scrot opts = spawn $ unwords [
     ]
 
 dmenu = unwords [
-      "exec `~/.cabal/bin/yeganesh -x --"
+      "exec `~/.local/bin/yeganesh -x --"
     , "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1`"
     ]

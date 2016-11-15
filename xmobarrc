@@ -1,5 +1,18 @@
 Config
-    { font = "xft:Ubuntu:size=10:antialias=true"
+    { font = "xft:Ubuntu:size=14:antialias=true"
+    -- , additionalFonts = []
+    -- , border = 0
+    -- , borderColor = "black"
+    -- , textOffset = 0
+    -- , iconOffset = 0
+    -- , allDesktops = True
+    -- , overrideRedirect = False
+    -- , pickBroadest = True
+    -- , hideOnStart = False
+    -- , lowerOnStart = False
+    -- , persistent = True
+    -- , iconRoot = ""
+    -- , alpha = 1.0
     , bgColor = "black"
     , fgColor = "grey"
     , position = TopSize L 100 20

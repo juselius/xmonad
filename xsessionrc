@@ -8,10 +8,10 @@
 [ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 
 # start the composition manager (shadows, transparency, etc.)
-xcompmgr -cC -r 8 &
+#xcompmgr -cC -r 8 &
 
 # Set the background color<
-#xsetroot -solid '#888888'
+xsetroot -solid '#888888'
 
 # Set up an icon tray (should try stalonetray)
 #trayer --edge top --align right --SetDockType true --SetPartialStrut true \

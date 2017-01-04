@@ -1,3 +1,0 @@
-#! /bin/sh
-PATH="$HOME/.local/bin:$PATH"
-exec gnome-session --session xmonad-plain "$@"

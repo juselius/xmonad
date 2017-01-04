@@ -1,11 +1,5 @@
-#!/bin/bash
-# vim:ft=sh
-
-# Load resources
-[ -f ~/.Xresources ] && xrdb -merge ~/.Xresources
-
 # Load keymap
-[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
+#[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
 
 # start the composition manager (shadows, transparency, etc.)
 #xcompmgr -cC -r 8 &

@@ -14,44 +14,42 @@ import qualified XMonad.Util.EZConfig as EZ
 import XMonad.Util.Run (spawnPipe, safeSpawn)
 
 main = do
-  xmproc <- spawnPipe "taffybar"
-  xmonad $
-    ewmh
-      defaultConfig
-      { modMask = mod4Mask
-      , layoutHook = desktopLayouts
-      -- , logHook =
-      --     dynamicLogWithPP
-      --       xmobarPP
-      --       { ppOutput = hPutStrLn xmproc
-      --       , ppTitle = xmobarColor "green" "" . shorten 50
-      --       }
-      , manageHook = myManageHook <+> manageDocks <+> manageHook defaultConfig
-      , handleEventHook = docksEventHook <+> fullscreenEventHook
-      , terminal = "xfce4-terminal"
-      , keys = myKeys <+> keys defaultConfig
-      , borderWidth = 1
-      , normalBorderColor = "gray"
-      , focusedBorderColor = "crimson"
-      , focusFollowsMouse = True
-      , workspaces = map show [1 .. 9]
-      , startupHook = gnomeRegister2 >> startup >> startupHook defaultConfig
-      }
+    xmproc <- spawnPipe "taffybar"
+    xmonad $
+        ewmh
+            defaultConfig
+            { modMask = mod4Mask
+            , layoutHook = desktopLayouts
+            , manageHook =
+                  myManageHook <+> manageDocks <+> manageHook defaultConfig
+            , handleEventHook = docksEventHook <+> fullscreenEventHook
+            , terminal = "gnome-terminal" --"xfce4-terminal"
+            , keys = myKeys <+> keys defaultConfig
+            , borderWidth = 1
+            , normalBorderColor = "gray"
+            , focusedBorderColor = "crimson"
+            , focusFollowsMouse = True
+            , workspaces = map show [1 .. 9]
+            , startupHook =
+                     gnomeRegister2
+                  >> startup
+                  >> startupHook defaultConfig
+            }
 
 myManageHook =
-  composeAll . concat $
-  [ [isFullscreen --> myDoFullFloat]
-  , [className =? c --> doIgnore | c <- myIgnores]
-  , [className =? c --> doCenterFloat | c <- myFloats]
-  , [className =? c --> doShift "1" | c <- onWs1]
-  , [className =? c --> doShift "2" | c <- onWs2]
-  , [className =? c --> doShift "7" | c <- onWs7]
-  , [className =? c --> doShift "8" | c <- onWs8]
-  , [className =? c --> doShift "9" | c <- onWs9]
-  , [appName =? n --> doCenterFloat | n <- myNames]
-  , [citrixReceiver --> doFloat]
-  , [currentWs =? n --> insertPosition Below Newer | n <- ["1", "2"]]
-  ]
+    composeAll . concat $
+    [ [isFullscreen --> myDoFullFloat]
+    , [className =? c --> doIgnore | c <- myIgnores]
+    , [className =? c --> doCenterFloat | c <- myFloats]
+    , [className =? c --> doShift "1" | c <- onWs1]
+    , [className =? c --> doShift "2" | c <- onWs2]
+    , [className =? c --> doShift "7" | c <- onWs7]
+    , [className =? c --> doShift "8" | c <- onWs8]
+    , [className =? c --> doShift "9" | c <- onWs9]
+    , [appName =? n --> doCenterFloat | n <- myNames]
+    , [citrixReceiver --> doFloat]
+    , [currentWs =? n --> insertPosition Below Newer | n <- ["1", "2"]]
+    ]
     -- workspaces
   where
     onWs1 = myMail
@@ -68,14 +66,14 @@ myManageHook =
     myGimp = ["Gimp"]
     myVm = ["VirtualBox", "Remmina"]
     myFloats =
-      myMovie ++
-      [ "Xmessage"
-      , "XFontSel"
-      , "Do"
-      , "Downloads"
-      , "Nm-connection-editor"
-      , "Launchbox"
-      ]
+        myMovie ++
+        [ "Xmessage"
+        , "XFontSel"
+        , "Do"
+        , "Downloads"
+        , "Nm-connection-editor"
+        , "Launchbox"
+        ]
     --, "VirtualBox"
     --, "Remmina"
     -- resources
@@ -84,51 +82,51 @@ myManageHook =
     myNames = ["bashrun", "Google Chrome Options", "Chromium Options"]
     -- special apps
     citrixReceiver =
-      className =? "sun-applet-PluginMain" <&&> appName =?
-      "sun-awt-X11-XFramePeer"
+        className =? "sun-applet-PluginMain" <&&> appName =?
+        "sun-awt-X11-XFramePeer"
     -- a trick for fullscreen but stil allow focusing of other WSs
     myDoFullFloat :: ManageHook
     myDoFullFloat = doF W.focusDown <+> doFullFloat
 
 myKeys =
-  flip
-    EZ.mkKeymap
-    [ ("M-p", spawn dmenu)
-    , ("S-M-p", spawn "/opt/bin/launchbox.py")
-    , ("S-M-n", spawn "nautilus --no-desktop --browser")
-    , ("S-M-s", spawn "gnome-control-center")
-          -- , ("S-M-q", spawn "killall -s 15 -u jonas gnome-session")
-    , ("S-M-q", spawn "gnome-session-quit --force")
-    , ("<XF86AudioMute>", spawn "amixer -q -D pulse sset Master toggle")
-    , ( "<XF86AudioRaiseVolume>"
-      , spawn "amixer -q -D pulse sset Master 6000+ unmute")
-    , ( "<XF86AudioLowerVolume>"
-      , spawn "amixer -q -D pulse sset Master 6000- unmute")
-    , ( "<XF86AudioPlay>"
-      , spawn $
-        unwords
-          [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
-          , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
-          ])
-    , ( "<XF86AudioNext>"
-      , spawn $
-        unwords
-          [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
-          , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
-          ])
-    , ( "<XF86AudioPrevious>"
-      , spawn $
-        unwords
-          [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
-          , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
-          ])
-    , ("M-<Print>", screenshot "")
-    , ("M-S-<Print>", screenshot "-s")
-    , ("M-C-<Print>", screenshot "-u")
-    ]
+    flip
+        EZ.mkKeymap
+        [ ("M-p", spawn dmenu)
+        , ("S-M-p", spawn "/opt/bin/launchbox.py")
+        , ("S-M-n", spawn "nautilus --no-desktop --browser")
+        , ("S-M-s", spawn "gnome-control-center")
+        , ("S-M-q", spawn "gnome-session-quit --force")
+        , ("<XF86AudioMute>", spawn "amixer -q -D pulse sset Master toggle")
+        , ( "<XF86AudioRaiseVolume>"
+          , spawn "amixer -q -D pulse sset Master 6000+ unmute")
+        , ( "<XF86AudioLowerVolume>"
+          , spawn "amixer -q -D pulse sset Master 6000- unmute")
+        , ( "<XF86AudioPlay>"
+          , spawn $
+            unwords
+                [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
+                , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.PlayPause"
+                ])
+        , ( "<XF86AudioNext>"
+          , spawn $
+            unwords
+                [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
+                , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Next"
+                ])
+        , ( "<XF86AudioPrevious>"
+          , spawn $
+            unwords
+                [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
+                , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
+                ])
+        , ("M-<Print>", screenshot "")
+        , ("M-S-<Print>", screenshot "-s")
+        , ("M-C-<Print>", screenshot "-u")
+        ]
 
 startup :: X ()
-startup = do
+startup = return ()
+-- startup = do
   -- user <- liftIO $ getEnv "USER"
   -- spawn $
   --   unwords -- restart trayer on M-q
@@ -139,38 +137,37 @@ startup = do
   --     ]
     --spawn "xsetroot -solid #888888"
     --spawn "xloadimage -onroot -fullscreen <path.to.image>"
-  return ()
 
 gnomeRegister2
-  :: MonadIO m
-  => m ()
+    :: MonadIO m
+    => m ()
 gnomeRegister2 =
-  io $ do
-    x <- lookup "DESKTOP_AUTOSTART_ID" `fmap` getEnvironment
-    whenJust x $ \sessionId ->
-      safeSpawn
-        "dbus-send"
-        [ "--session"
-        , "--print-reply=literal"
-        , "--dest=org.gnome.SessionManager"
-        , "/org/gnome/SessionManager"
-        , "org.gnome.SessionManager.RegisterClient"
-        , "string:xmonad"
-        , "string:" ++ sessionId
-        ]
+    io $ do
+        x <- lookup "DESKTOP_AUTOSTART_ID" `fmap` getEnvironment
+        whenJust x $ \sessionId ->
+            safeSpawn
+                "dbus-send"
+                [ "--session"
+                , "--print-reply=literal"
+                , "--dest=org.gnome.SessionManager"
+                , "/org/gnome/SessionManager"
+                , "org.gnome.SessionManager.RegisterClient"
+                , "string:xmonad"
+                , "string:" ++ sessionId
+                ]
 
 screenshot opts =
-  spawn $
-  unwords
-    [ "sleep 0.2;"
-    , "scrot "
-    , opts
-    , "-e 'xdg-open $f'"
-    , "$HOME/Downloads/screenshot-%Y-%m-%d-%H%M%S.png"
-    ]
+    spawn $
+    unwords
+        [ "sleep 0.2;"
+        , "scrot "
+        , opts
+        , "-e 'xdg-open $f'"
+        , "$HOME/Downloads/screenshot-%Y-%m-%d-%H%M%S.png"
+        ]
 
 dmenu =
-  unwords
-    [ "exec `~/.local/bin/yeganesh -x --"
-    , "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1`"
-    ]
+    unwords
+        [ "exec `yeganesh -x --"
+        , "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1`"
+        ]

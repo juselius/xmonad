@@ -1,6 +1,0 @@
-[Desktop Entry]
-Name=Plain XMonad session
-Comment=Plain XMonad with session management
-Exec=xmonad-session
-Icon=
-Type=Application

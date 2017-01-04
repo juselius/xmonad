@@ -10,25 +10,10 @@ Installation
 
 ::
 
-    $ sudo apt-get install xmonad xmobar libghc-xmonad-contrib-dev
-    $ sudo apt-get install trayer volti suckless-tools
-    $ sudo apt-get install xcompmgr scrot conky gsimplecal
-    $ sudo apt-get install xfce4-terminal
-
-    $ git clone git@source.uit.no:jonas/xmonad ~/.xmonad
-    $ ln -s .xmonad/xmobarrc .xmobarrc
-    $ ln -s .xmonad/xsessionrc .xsessionrc
-    $ ln -s .xmonad/conkyrc .conkyrc
-
-    $ cabal install yeganesh
-
-    $ cp launchbox/launchbox.py /opt/bin
-    $ cd /tmp; git clone https://github.com/olemb/launchbox.git
-
-Edit ``.xsessionrc`` to your fit your needs. Log out and choose the ``XMonad``
+Edit ``.xsession`` to your fit your needs. Log out and choose the ``XMonad``
 session.
 
-Using unity/gnome-session
+Using gnome-session
 -------------------
 
 Running xmonad under session management has some advantages:
@@ -36,13 +21,6 @@ Running xmonad under session management has some advantages:
       etc.)
     * Controlled logout using gnome-session-quit
     * Keyboard layout indicator/selector in the system tray
-
-To enable session management (without gnome-panel)::
-
-    $ sudo cp .xmonad/xmonad-session.desktop /usr/share/xsessions/
-    $ sudo cp .xmonad/xmonad-plain.session /usr/share/gnome-session/sessions/
-    $ sudo cp .xmonad/xmonad-plain.desktop /usr/share/applications/
-    $ sudo cp .xmonad/xmonad-session /usr/bin/
 
 Themes
 -------

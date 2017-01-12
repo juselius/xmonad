@@ -6,6 +6,7 @@
 
 # Set the background color<
 xsetroot -solid '#888888'
+xsetroot -cursor_name left_ptr
 
 # Set up an icon tray (should try stalonetray)
 #trayer --edge top --align right --SetDockType true --SetPartialStrut true \

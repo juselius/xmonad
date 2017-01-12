@@ -7,6 +7,7 @@ let
     xmonad-extras
     yeganesh
     taffybar
+    dmenu
   ]);
 
 in
@@ -41,6 +42,7 @@ in
       xmonad-contrib
       yeganesh
       taffybar
+      dmenu
     ];
     buildPhase = ''
       eval $(egrep '^export' ${ghc}/bin/ghc)

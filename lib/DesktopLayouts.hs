@@ -9,10 +9,10 @@ import XMonad.Layout.IM
 import XMonad.Hooks.ManageDocks
 
 desktopLayouts =
-    onWorkspace "1"  defLayout $
+    onWorkspace "1"  mailLayout $
     onWorkspace "2"  webLayout $
-    onWorkspaces (map show [3..8]) defLayout $
-    onWorkspace "9" fullLayout $
+    onWorkspaces (map show [3..9]) defLayout $
+    -- onWorkspace "9" fullLayout $
     smartBorders (layoutHook defaultConfig)
     where
         defLayout = desktopLayoutModifiers $
@@ -21,8 +21,8 @@ desktopLayouts =
             smartBorders $ Full ||| Tall 1 (3/100) 0.65
         fullLayout = desktopLayoutModifiers $
             noBorders $ Full ||| Mirror (Tall 1 (3/100) 0.8)
-        -- mailLayout = desktopLayoutModifiers $
-        --     smartBorders $ Full ||| Tall 1 (3/100) 0.6
+        mailLayout = desktopLayoutModifiers $
+            smartBorders $ Full ||| Tall 1 (3/100) 0.6
          --threeCols = desktopLayoutModifiers $ smartBorders $
         --         ThreeCol 1 (3/100) (1/3) ||| Full ||| Tall 1 (2/100) 0.7
         -- gimpLayout  = avoidStruts $ withIM 0.11 (Role "gimp-toolbox") $

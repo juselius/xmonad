@@ -1,4 +1,4 @@
-{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghc801" }:
+{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghc802" }:
 let
   inherit (nixpkgs) pkgs;
   ghc = pkgs.haskell.packages.${compiler}.ghcWithPackages (ps: with ps; [
@@ -7,7 +7,6 @@ let
     xmonad-extras
     yeganesh
     taffybar
-    dmenu
   ]);
 
 in
@@ -42,7 +41,7 @@ in
       xmonad-contrib
       yeganesh
       taffybar
-      dmenu
+      pkgs.dmenu2
     ];
     buildPhase = ''
       eval $(egrep '^export' ${ghc}/bin/ghc)

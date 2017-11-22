@@ -58,8 +58,8 @@ myManageHook =
     onWs8 = myGimp
     onWs9 = myVm
     -- classnames
-    myMail = ["Thunderbird", "Evolution"]
-    myWeb = ["Firefox", "Google-chrome", "Chromium", "Chromium-browser"]
+    myMail = ["Firefox", "Thunderbird", "Evolution"]
+    myWeb = ["Google-chrome", "Chromium", "Chromium-browser"]
     myMovie = ["mplayer2", "Vlc"]
     myMusic = ["Rhythmbox", "Spotify"]
     myChat = ["Pidgin", "Buddy List", "Skype"]
@@ -169,5 +169,6 @@ screenshot opts =
 dmenu =
     unwords
         [ "exec `yeganesh -x --"
-        , "-fn -*-fixed-*-*-*-*-15-*-*-*-*-*-iso8859-1`"
+        , " -fn 'DejaVu Sans Mono-11'"
+        , "-s 0 -nb white -nf black -h 24`"
         ]

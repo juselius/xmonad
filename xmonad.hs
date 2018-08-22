@@ -9,21 +9,37 @@ import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
+import XMonad.Util.Run (spawnPipe, safeSpawn)
+import System.Taffybar.Support.PagerHints (pagerHints)
+-- import Data.String.Conversions
+import qualified Codec.Binary.UTF8.String as UTF8
 import qualified XMonad.StackSet as W
 import qualified XMonad.Util.EZConfig as EZ
-import XMonad.Util.Run (spawnPipe, safeSpawn)
+import qualified DBus as D
+import qualified DBus.Client as D
+
 
 main = do
-    xmproc <- spawnPipe "taffybar"
+    dbus <- D.connectSession
+    D.requestName dbus (D.busName_ "org.xmonad.Log")
+      [ D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue ]
+    xmproc <- spawnPipe "xmobar"
     xmonad $
-        ewmh
+        docks $
+        ewmh $
+        pagerHints
             defaultConfig
             { modMask = mod4Mask
             , layoutHook = desktopLayouts
             , manageHook =
                   myManageHook <+> manageDocks <+> manageHook defaultConfig
             , handleEventHook = docksEventHook <+> fullscreenEventHook
-            , terminal = "gnome-terminal" --"xfce4-terminal"
+            -- , logHook = dynamicLogWithPP (myLogHook dbus)
+            , logHook = dynamicLogWithPP xmobarPP
+              { ppOutput = hPutStrLn xmproc
+              , ppTitle = xmobarColor "green" "" . shorten 50
+              }
+            , terminal = "termite"
             , keys = myKeys <+> keys defaultConfig
             , borderWidth = 1
             , normalBorderColor = "gray"
@@ -43,7 +59,7 @@ myManageHook =
     , [className =? c --> doCenterFloat | c <- myFloats]
     , [className =? c --> doShift "1" | c <- onWs1]
     , [className =? c --> doShift "2" | c <- onWs2]
-    , [className =? c --> doShift "7" | c <- onWs7]
+    -- , [className =? c --> doShift "7" | c <- onWs7]
     , [className =? c --> doShift "8" | c <- onWs8]
     , [className =? c --> doShift "9" | c <- onWs9]
     , [appName =? n --> doCenterFloat | n <- myNames]
@@ -73,6 +89,8 @@ myManageHook =
         , "Downloads"
         , "Nm-connection-editor"
         , "Launchbox"
+        , "Pinentry"
+        , "Gcr-prompter"
         ]
     --, "VirtualBox"
     --, "Remmina"
@@ -92,10 +110,8 @@ myKeys =
     flip
         EZ.mkKeymap
         [ ("M-p", spawn dmenu)
-        , ("S-M-p", spawn "/opt/bin/launchbox.py")
         , ("S-M-n", spawn "nautilus --no-desktop --browser")
-        , ("S-M-s", spawn "gnome-control-center")
-        , ("S-M-q", spawn "gnome-session-quit --force")
+        -- , ("S-M-q", spawn "gnome-session-quit --force")
         , ("<XF86AudioMute>", spawn "amixer -q -D pulse sset Master toggle")
         , ( "<XF86AudioRaiseVolume>"
           , spawn "amixer -q -D pulse sset Master 6000+ unmute")
@@ -119,9 +135,9 @@ myKeys =
                 [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
                 , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
                 ])
-        , ("M-<Print>", screenshot "")
-        , ("M-S-<Print>", screenshot "-s")
-        , ("M-C-<Print>", screenshot "-u")
+        , ("S-M-s", spawn "flameshot gui")
+        -- , ("M-S-<Print>", screenshot "-s")
+        -- , ("M-C-<Print>", screenshot "-u")
         ]
 
 startup :: X ()
@@ -156,15 +172,20 @@ gnomeRegister2 =
                 , "string:" ++ sessionId
                 ]
 
-screenshot opts =
-    spawn $
-    unwords
-        [ "sleep 0.2;"
-        , "scrot "
-        , opts
-        , "-e 'xdg-open $f'"
-        , "$HOME/Downloads/screenshot-%Y-%m-%d-%H%M%S.png"
-        ]
+dbusLogHook :: D.Client -> PP
+dbusLogHook dbus = def { ppOutput = dbusOutput dbus }
+
+-- Emit a DBus signal on log updates
+dbusOutput :: D.Client -> String -> IO ()
+dbusOutput dbus str = do
+    let signal = (D.signal objectPath interfaceName memberName) {
+            D.signalBody = [D.toVariant $ UTF8.decodeString str]
+        }
+    D.emit dbus signal
+  where
+    objectPath = D.objectPath_ "/org/xmonad/Log"
+    interfaceName = D.interfaceName_ "org.xmonad.Log"
+    memberName = D.memberName_ "Update"
 
 dmenu =
     unwords

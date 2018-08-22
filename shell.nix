@@ -1,4 +1,5 @@
 { nixpkgs ? import <nixpkgs> {}, compiler ? "ghc802" }:
+#{ nixpkgs ? import <nixpkgs> {}, compiler ? "ghc842" }:
 let
   inherit (nixpkgs) pkgs;
   ghc = pkgs.haskell.packages.${compiler}.ghcWithPackages (ps: with ps; [
@@ -6,7 +7,8 @@ let
     xmonad-contrib
     xmonad-extras
     yeganesh
-    taffybar
+    #    taffybar
+    xmobar
   ]);
 in
   pkgs.stdenv.mkDerivation {

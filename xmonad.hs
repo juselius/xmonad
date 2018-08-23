@@ -74,8 +74,8 @@ myManageHook =
     onWs8 = myGimp
     onWs9 = myVm
     -- classnames
-    myMail = ["Firefox", "Thunderbird", "Evolution"]
-    myWeb = ["Google-chrome", "Chromium", "Chromium-browser"]
+    myMail = ["wavebox", "Evolution"]
+    myWeb = ["Firefox", "Google-chrome", "Chromium", "Chromium-browser"]
     myMovie = ["mplayer2", "Vlc"]
     myMusic = ["Rhythmbox", "Spotify"]
     myChat = ["Pidgin", "Buddy List", "Skype"]

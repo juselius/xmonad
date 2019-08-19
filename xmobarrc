@@ -1,5 +1,5 @@
 Config
-    { font = "xft:Ubuntu:size=9:antialias=true"
+    { font = "xft:Ubuntu:size=8:antialias=true"
     , additionalFonts = []
     -- , border = 0
     , borderColor = "black"
@@ -27,19 +27,20 @@ Config
         , Run Memory ["-t", "Mem: <usedratio>%"] 10
         , Run Date "%a %b %d %H:%M" "date" 10
         , Run Swap [] 10
-        , Run Battery
-            [ "-L", "25", "-H", "40"
-            ,"--high", "green"
-            , "--normal", "yellow"
-            , "--low", "red"
-            , "--template", "<timeleft> (<left>%)"
-            ] 100
+        -- , Run Battery
+        --     [ "-L", "25", "-H", "40"
+        --     ,"--high", "green"
+        --     , "--normal", "yellow"
+        --     , "--low", "red"
+        --     , "--template", "<timeleft> (<left>%)"
+        --     ] 100
         , Run StdinReader
         ]
     , sepChar = "%"
     , alignSep = "}{"
-    --, template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory% |  %dynnetwork%</action>    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>    "
-    , template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory%  |  %dynnetwork%</action>  |  <action=gnome-power-statistics>%battery%</action>       <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>  "
+    -- , template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory% |  %dynnetwork%</action>    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>    "
+    -- , template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory% |  %dynnetwork%</action>  |  <action=gnome-power-statistics>%battery%</action>       <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>  "
+    , template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory%  |  %dynnetwork% </action>    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>  "
     }
 
 -- font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"

@@ -6,6 +6,7 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.ThreeColumns
 import XMonad.Layout.Reflect (reflectHoriz)
 import XMonad.Layout.IM
+import XMonad.Layout.ResizableTile
 import XMonad.Hooks.ManageDocks
 
 desktopLayouts =
@@ -16,7 +17,7 @@ desktopLayouts =
     smartBorders (layoutHook defaultConfig)
     where
         defLayout = desktopLayoutModifiers $
-            smartBorders $ Tall 1 (3/100) 0.5 ||| Full
+            smartBorders $ ResizableTall 1 (5/100) 0.5 [] ||| Full
         webLayout  = desktopLayoutModifiers $
             smartBorders $ Full ||| Tall 1 (3/100) 0.65
         fullLayout = desktopLayoutModifiers $

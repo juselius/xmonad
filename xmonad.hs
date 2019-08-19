@@ -10,7 +10,8 @@ import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Util.Run (spawnPipe, safeSpawn)
-import System.Taffybar.Support.PagerHints (pagerHints)
+-- import System.Taffybar.Support.PagerHints (pagerHints)
+import XMonad.Layout.ResizableTile
 -- import Data.String.Conversions
 import qualified Codec.Binary.UTF8.String as UTF8
 import qualified XMonad.StackSet as W
@@ -27,7 +28,7 @@ main = do
     xmonad $
         docks $
         ewmh $
-        pagerHints
+        -- pagerHints
             defaultConfig
             { modMask = mod4Mask
             , layoutHook = desktopLayouts
@@ -136,8 +137,8 @@ myKeys =
                 , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
                 ])
         , ("S-M-s", spawn "flameshot gui")
-        -- , ("M-S-<Print>", screenshot "-s")
-        -- , ("M-C-<Print>", screenshot "-u")
+        , ("M-S-h", sendMessage MirrorExpand)
+        , ("M-S-l", sendMessage MirrorShrink)
         ]
 
 startup :: X ()
@@ -187,9 +188,9 @@ dbusOutput dbus str = do
     interfaceName = D.interfaceName_ "org.xmonad.Log"
     memberName = D.memberName_ "Update"
 
-dmenu =
-    unwords
-        [ "exec `yeganesh -x --"
-        , " -fn 'DejaVu Sans Mono-11'"
-        , "-s 0 -nb white -nf black -h 24`"
-        ]
+dmenu = "exec dmenu_run"
+    -- unwords
+    --     [ "exec `yeganesh -x --"
+    --     , " -fn 'DejaVu Sans Mono-11'"
+    --     , "-s 0 -nb white -nf black -h 24`"
+    --     ]

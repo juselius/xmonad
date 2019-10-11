@@ -1,3 +1,4 @@
+{-# LANGUAGE OverloadedStrings #-}
 module Main where
 
 import System.Taffybar
@@ -10,6 +11,9 @@ import System.Taffybar.Widget.Generic.PollingGraph
 import System.Taffybar.Widget.Generic.PollingLabel
 import System.Taffybar.Widget.Util
 import System.Taffybar.Widget.Workspaces
+import System.Taffybar.Widget.Text.NetworkMonitor
+import System.Taffybar.Widget.Text.MemoryMonitor
+
 
 transparent = (0.0, 0.0, 0.0, 0.0)
 yellow1 = (0.9453125, 0.63671875, 0.2109375, 1.0)
@@ -53,40 +57,45 @@ cpuCallback = do
 main = do
   let myWorkspacesConfig =
         defaultWorkspacesConfig
-        { minIcons = 1
+        { minIcons = 0
+        , maxIcons = Just 1
         , widgetGap = 0
+        , underlineHeight = 3
         , showWorkspaceFn = hideEmpty
         }
       workspaces = workspacesNew myWorkspacesConfig
       cpu = pollingGraphNew cpuCfg 1 cpuCallback
+      -- mem = textMemoryMonitorNew "mem:$used$" 1.0
+      -- net = networkMonitorNew "eno2" Nothing
       mem = pollingGraphNew memCfg 1 memCallback
       net = networkGraphNew netCfg Nothing
       clock = textClockNew Nothing "%a %b %_d %r" 1
       layout = layoutNew defaultLayoutConfig
       windows = windowsNew defaultWindowsConfig
-          -- See https://github.com/taffybar/gtk-sni-tray#statusnotifierwatcher
-          -- for a better way to set up the sni tray
+        -- See https://github.com/taffybar/gtk-sni-tray#statusnotifierwatcher
+        -- for a better way to set up the sni tray
       tray = sniTrayThatStartsWatcherEvenThoughThisIsABadWayToDoIt
       myConfig = defaultSimpleTaffyConfig
         { startWidgets =
             workspaces : map (>>= buildContentsBox) [ layout ]
         , endWidgets = map (>>= buildContentsBox)
-          [ batteryIconNew
-          , clock
-          , tray
+          [ clock
+          -- , batteryIconNew
           , cpu
           , mem
           , net
-          , mpris2New
+          , tray
+          -- , mpris2New
           ]
         , barPosition = Top
         , barPadding = 0
-        , barHeight = 24
+        , barHeight = 22
         , widgetSpacing = 0
         , monitorsAction = usePrimaryMonitor
         }
-  dyreTaffybar $ withBatteryRefresh $ withLogServer $ withToggleServer $
-    toTaffyConfig myConfig
+  dyreTaffybar $ withLogServer $ withToggleServer $ toTaffyConfig myConfig
+  -- dyreTaffybar $ withBatteryRefresh $ withLogServer $ withToggleServer $
+  --   toTaffyConfig myConfig
 --
 -- main =
 --   defaultTaffybar

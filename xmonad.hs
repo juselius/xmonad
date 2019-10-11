@@ -1,5 +1,4 @@
 import qualified Data.Map as M
-import DesktopLayouts
 import System.Environment (getEnvironment, getEnv)
 import System.IO (hPutStrLn)
 import XMonad
@@ -10,32 +9,61 @@ import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Util.Run (spawnPipe, safeSpawn)
--- import System.Taffybar.Support.PagerHints (pagerHints)
+import System.Taffybar.Support.PagerHints (pagerHints)
 import XMonad.Layout.ResizableTile
--- import Data.String.Conversions
 import qualified Codec.Binary.UTF8.String as UTF8
 import qualified XMonad.StackSet as W
 import qualified XMonad.Util.EZConfig as EZ
-import qualified DBus as D
-import qualified DBus.Client as D
+import qualified DBus as DBus
+import qualified DBus.Client as DBus
+import XMonad.Hooks.UrgencyHook (UrgencyHook, urgencyHook, withUrgencyHook)
+import qualified XMonad.StackSet as XStack
+import XMonad.Layout.PerWorkspace
+import XMonad.Layout.NoBorders
+import XMonad.Layout.ThreeColumns
+import XMonad.Layout.Reflect (reflectHoriz)
+import XMonad.Layout.IM
+import XMonad.Layout.ResizableTile
+import XMonad.Hooks.ManageDocks
+import XMonad.Layout.Grid
+import XMonad.Layout.Circle
+import           XMonad.Util.NamedWindows         (getName)
+import           Codec.Binary.UTF8.String         (decodeString)
 
+fg = "#f9f7dd"
+bg = "#2f2f2f"
+lightGray = "#888888"
+midGray = "#676767"
+darkGray = "#474747"
+red = "#ff5a5f"
+green  = "#86cb92"
+yellow = "#f1f0cc"
+blue = "#07a0c3"
+purple = "#a761c2"
+cyan = "#6e98a4"
+black = "#000000"
+
+roboto  = "xft:Roboto:size=12"
+gap     = 10
+topBar  = 10
 
 main = do
-    dbus <- D.connectSession
-    D.requestName dbus (D.busName_ "org.xmonad.Log")
-      [ D.nameAllowReplacement, D.nameReplaceExisting, D.nameDoNotQueue ]
+    -- dbus <- DBus.connectSession
+    -- DBus.requestName dbus (DBus.busName_ "org.xmonad.Log")
+    --   [ DBus.nameAllowReplacement, DBus.nameReplaceExisting, DBus.nameDoNotQueue ]
+    dbus <- createDBusClient
     xmproc <- spawnPipe "xmobar"
     xmonad $
         docks $
         ewmh $
         -- pagerHints
-            defaultConfig
+           defaultConfig
             { modMask = mod4Mask
             , layoutHook = desktopLayouts
             , manageHook =
                   myManageHook <+> manageDocks <+> manageHook defaultConfig
             , handleEventHook = docksEventHook <+> fullscreenEventHook
-            -- , logHook = dynamicLogWithPP (myLogHook dbus)
+            -- , logHook = polybarWorkspacesLogHook dbus
             , logHook = dynamicLogWithPP xmobarPP
               { ppOutput = hPutStrLn xmproc
               , ppTitle = xmobarColor "green" "" . shorten 50
@@ -52,6 +80,33 @@ main = do
                   >> startup
                   >> startupHook defaultConfig
             }
+
+desktopLayouts =
+    onWorkspace "1"  mailLayout $
+    onWorkspace "2"  webLayout $
+    onWorkspaces (map show [3..9]) defLayout $
+    -- onWorkspace "9" expLayout $
+    smartBorders (layoutHook defaultConfig)
+    where
+        defLayout = desktopLayoutModifiers $
+            smartBorders $ ResizableTall 1 (5/100) 0.5 [] ||| Full
+        webLayout  = desktopLayoutModifiers $
+            smartBorders $ Full ||| Tall 1 (3/100) 0.65
+        fullLayout = desktopLayoutModifiers $
+            noBorders $ Full ||| Mirror (Tall 1 (3/100) 0.8)
+        mailLayout = desktopLayoutModifiers $
+            smartBorders $ Full ||| Tall 1 (3/100) 0.6
+        expLayout =
+          desktopLayoutModifiers $
+          smartBorders $
+          avoidStruts $
+            ThreeColMid 1 (3/100) (3/7)
+            ||| ResizableTall 1 (3/100) (1/2) []
+            ||| Mirror (ResizableTall 1 (3/100) (1/2) [])
+            ||| noBorders Full
+            ||| Circle
+            ||| Grid
+
 
 myManageHook =
     composeAll . concat $
@@ -141,6 +196,66 @@ myKeys =
         , ("M-S-l", sendMessage MirrorShrink)
         ]
 
+polybarWorkspacesLogHook :: DBus.Client -> X ()
+polybarWorkspacesLogHook dBusClient = do
+  ewmhDesktopsLogHook
+  dynamicLogWithPP $ def {
+    ppCurrent             = polybarWorkspaceFormat bg blue,
+    ppVisible             = polybarWorkspaceFormat bg yellow,
+    ppUrgent              = polybarWorkspaceFormat bg red,
+    ppHidden              = polybarWorkspaceFormat fg bg,
+    ppHiddenNoWindows     = polybarWorkspaceFormat darkGray bg,
+    ppWsSep               = "",
+    ppSep                 = "",
+    ppOrder               = \(ws:_:t:_) -> [ws, t],
+    ppTitle               = const "",
+    ppOutput              = signalToDBus dBusClient
+    }
+
+data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
+instance UrgencyHook LibNotifyUrgencyHook where
+  urgencyHook LibNotifyUrgencyHook w = do
+    name     <- getName w
+    Just idx <- XStack.findTag w <$> gets windowset
+    safeSpawn "notify-send" [show name, "workspace " ++ idx]
+
+polybarWorkspaceFormat :: String -> String -> WorkspaceId -> String
+polybarWorkspaceFormat foreground background workspaceId =
+  "%{F" ++ foreground ++ " B" ++ background ++ "}  " ++ icon workspaceId ++ "  %{F- B-}"
+  where
+    icon w | w == "WEB"   = "\62057"
+           | w == "EMACS" = "\61982"
+           | w == "TERM" = "\61728"
+           | w == "VID" = "\61448"
+           | w == "FILE" = "\61563"
+           | otherwise = "\62060"
+
+dBusInterface = "user.xmonad.log"
+dBusPath = "/user/xmonad/log"
+dBusMember = "DynamicLogWithPP"
+
+createDBusClient :: IO DBus.Client
+createDBusClient = do
+  client <- DBus.connectSession
+  DBus.requestName client (DBus.busName_ dBusInterface) dBusParams
+  return client
+  where
+    dBusParams = [
+      DBus.nameAllowReplacement,
+      DBus.nameReplaceExisting,
+      DBus.nameDoNotQueue]
+
+signalToDBus :: DBus.Client -> String -> IO ()
+signalToDBus client message =  do
+  let signal = (DBus.signal objectPath interfaceName memberName) {
+    DBus.signalBody = [DBus.toVariant $ decodeString message]
+  }
+  DBus.emit client signal
+  where
+    objectPath = DBus.objectPath_ dBusPath
+    interfaceName = DBus.interfaceName_ dBusInterface
+    memberName = DBus.memberName_ dBusMember
+
 startup :: X ()
 startup = return ()
 -- startup = do
@@ -173,24 +288,24 @@ gnomeRegister2 =
                 , "string:" ++ sessionId
                 ]
 
-dbusLogHook :: D.Client -> PP
+dbusLogHook :: DBus.Client -> PP
 dbusLogHook dbus = def { ppOutput = dbusOutput dbus }
 
 -- Emit a DBus signal on log updates
-dbusOutput :: D.Client -> String -> IO ()
+dbusOutput :: DBus.Client -> String -> IO ()
 dbusOutput dbus str = do
-    let signal = (D.signal objectPath interfaceName memberName) {
-            D.signalBody = [D.toVariant $ UTF8.decodeString str]
+    let signal = (DBus.signal objectPath interfaceName memberName) {
+            DBus.signalBody = [DBus.toVariant $ UTF8.decodeString str]
         }
-    D.emit dbus signal
+    DBus.emit dbus signal
   where
-    objectPath = D.objectPath_ "/org/xmonad/Log"
-    interfaceName = D.interfaceName_ "org.xmonad.Log"
-    memberName = D.memberName_ "Update"
+    objectPath = DBus.objectPath_ "/org/xmonad/Log"
+    interfaceName = DBus.interfaceName_ "org.xmonad.Log"
+    memberName = DBus.memberName_ "Update"
 
-dmenu = "exec dmenu_run"
-    -- unwords
-    --     [ "exec `yeganesh -x --"
-    --     , " -fn 'DejaVu Sans Mono-11'"
-    --     , "-s 0 -nb white -nf black -h 24`"
-    --     ]
+dmenu = --"exec dmenu_run"
+    unwords
+        [ "exec `yeganesh -x --"
+        , " -fn 'DejaVu Sans Mono-11'"
+        , "-nb white -nf black`"
+        ]

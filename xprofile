@@ -1,0 +1,18 @@
+# Load keymap
+#[ -f ~/.Xmodmap ] && xmodmap ~/.Xmodmap
+
+# start the composition manager (shadows, transparency, etc.)
+#xcompmgr -cC -r 8 &
+
+# Set the background color<
+xsetroot -solid '#888888'
+xsetroot -cursor_name left_ptr
+
+# Set up an icon tray (should try stalonetray)
+#trayer --edge top --align right --SetDockType true --SetPartialStrut true \
+ #--expand true --width 15 --transparent true --tint 0x000000 --height 20 \
+ #--distancefrom right --distance 500 &
+
+#conky & ## disabled, interferes badly with xcompmgr
+#/opt/bin/spotify-notify.py -n -s &
+

@@ -1,21 +1,46 @@
 Config
-    { font = "xft:Ubuntu:size=10:antialias=true"
+    { font = "xft:Ubuntu:size=8:antialias=true"
+    , additionalFonts = []
+    -- , border = 0
+    , borderColor = "black"
+    , textOffset = 15
+    , iconOffset = 0
+    , allDesktops = False
+    , overrideRedirect = False
+    , pickBroadest = False
+    , hideOnStart = False
+    , lowerOnStart = False
+    , persistent = True
+    , iconRoot = ""
+    -- , alpha = 100
     , bgColor = "black"
     , fgColor = "grey"
     , position = TopSize L 100 20
     , commands =
-        [ Run DynNetwork ["-L","0","-H","32","--normal","green","--high","red"] 10
-        , Run Cpu ["-L","3","-H","50" , "--normal","green","--high","red"] 10
-        , Run Memory ["-t","Mem: <usedratio>%"] 10
-        , Run Swap [] 10
+        [ Run DynNetwork
+            [ "-L", "0", "-H", "32"
+            , "--normal", "green"
+            , "--high", "red"
+            ] 10
+        , Run Cpu ["-L", "3", "-H", "50" , "--normal", "green"
+            , "--high", "red"] 10
+        , Run Memory ["-t", "Mem: <usedratio>%"] 10
         , Run Date "%a %b %d %H:%M" "date" 10
-        --, Run Battery ["-L","50","-H","75","--high","green","--normal","yellow", "--low", "red", "--template", "bat:<left>"] 100
+        , Run Swap [] 10
+        -- , Run Battery
+        --     [ "-L", "25", "-H", "40"
+        --     ,"--high", "green"
+        --     , "--normal", "yellow"
+        --     , "--low", "red"
+        --     , "--template", "<timeleft> (<left>%)"
+        --     ] 100
         , Run StdinReader
         ]
     , sepChar = "%"
     , alignSep = "}{"
-    , template = "%StdinReader% }{ %cpu%  |  %memory% * %swap%  |  %dynnetwork%    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>    "
-    --, template = "%StdinReader% }{ %cpu%  |  %memory% * %swap%  |  %dynnetwork%  |  %battery%    <fc=#ee9a00>%date%</fc>"
+    -- , template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory% |  %dynnetwork%</action>    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>    "
+    -- , template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory% |  %dynnetwork%</action>  |  <action=gnome-power-statistics>%battery%</action>       <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>  "
+    , template = "%StdinReader% }{ <action=gnome-system-monitor>%cpu%  |  %memory%  |  %dynnetwork% </action>    <action=`gsimplecal`><fc=#ee9a00>%date%</fc></action>  "
     }
 
 -- font = "-*-Fixed-Bold-R-Normal-*-13-*-*-*-*-*-*-*"

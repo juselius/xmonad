@@ -330,8 +330,6 @@ ${color slate grey}HOME:  ${color }${fs_free /home}/${fs_size /home}
 ${fs_bar 3,100 /home}
 ${color slate grey}PROJ:  ${color }${fs_free /project}/${fs_size /project}
 ${fs_bar 3,100 /project}
-${color slate grey}VM:  ${color }${fs_free /machine}/${fs_size /machine}
-${fs_bar 3,100 /machine}
 ${color slate grey}BOOT:  ${color }${fs_free /boot}/${fs_size /boot}
 ${fs_bar 3,100 /boot}
 ${color slate grey}NET: 

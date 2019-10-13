@@ -9,7 +9,7 @@ import XMonad.Hooks.InsertPosition
 import XMonad.Hooks.ManageDocks
 import XMonad.Hooks.ManageHelpers
 import XMonad.Util.Run (spawnPipe, safeSpawn)
-import System.Taffybar.Support.PagerHints (pagerHints)
+-- import System.Taffybar.Support.PagerHints (pagerHints)
 import XMonad.Layout.ResizableTile
 import qualified Codec.Binary.UTF8.String as UTF8
 import qualified XMonad.StackSet as W

@@ -31,9 +31,6 @@ import           XMonad.Util.NamedWindows         (getName)
 import           Codec.Binary.UTF8.String         (decodeString)
 
 main = do
-    -- dbus <- DBus.connectSession
-    -- DBus.requestName dbus (DBus.busName_ "org.xmonad.Log")
-    --   [ DBus.nameAllowReplacement, DBus.nameReplaceExisting, DBus.nameDoNotQueue ]
     dbus <- createDBusClient
     -- xmproc <- spawnPipe "xmobar"
     xmonad $
@@ -180,50 +177,17 @@ myKeys =
         , ("M-S-l", sendMessage MirrorShrink)
         ]
 
--- fg = "#f9f7dd"
--- bg = "#2f2f2f"
--- lightGray = "#888888"
--- midGray = "#676767"
--- darkGray = "#474747"
--- red = "#ff5a5f"
--- green  = "#86cb92"
--- yellow = "#f1f0cc"
--- blue = "#07a0c3"
--- purple = "#a761c2"
--- cyan = "#6e98a4"
--- black = "#000000"
-
--- roboto  = "xft:Roboto:size=12"
--- gap     = 10
--- topBar  = 10
-green     = "#b8bb26"
+green     = "#78ee26"
 darkgreen = "#98971a"
 red       = "#fb4934"
 darkred   = "#cc241d"
-yellow    = "#fabd2f"
+yellow    = "#cabd2f"
 blue      = "#83a598"
 purple    = "#d3869b"
 aqua      = "#8ec07c"
 white     = "#eeeeee"
-
 pur2      = "#5b51c9"
 blue2     = "#2266d0"
-
--- polybarWorkspacesLogHook :: DBus.Client -> X ()
--- polybarWorkspacesLogHook dBusClient = do
---   ewmhDesktopsLogHook
---   dynamicLogWithPP $ def {
---     ppCurrent             = polybarWorkspaceFormat bg blue,
---     ppVisible             = polybarWorkspaceFormat bg yellow,
---     ppUrgent              = polybarWorkspaceFormat bg red,
---     ppHidden              = polybarWorkspaceFormat fg bg,
---     ppHiddenNoWindows     = polybarWorkspaceFormat darkGray bg,
---     ppWsSep               = "",
---     ppSep                 = "",
---     ppOrder               = \(ws:_:t:_) -> [ws, t],
---     ppTitle               = const "",
---     ppOutput              = signalToDBus dBusClient
---     }
 
 data LibNotifyUrgencyHook = LibNotifyUrgencyHook deriving (Read, Show)
 instance UrgencyHook LibNotifyUrgencyHook where
@@ -231,20 +195,6 @@ instance UrgencyHook LibNotifyUrgencyHook where
     name     <- getName w
     Just idx <- XStack.findTag w <$> gets windowset
     safeSpawn "notify-send" [show name, "workspace " ++ idx]
-
--- polybarWorkspaceFormat :: String -> String -> WorkspaceId -> String
--- polybarWorkspaceFormat foreground background workspaceId =
---   "%{F" ++ foreground ++ " B" ++ background ++ "}  " ++ icon workspaceId ++ "  %{F- B-}"
---   where
---     icon w | w == "WEB"   = "\62057"
---            | w == "EMACS" = "\61982"
---            | w == "TERM" = "\61728"
---            | w == "VID" = "\61448"
---            | w == "FILE" = "\61563"
---            | otherwise = "\62060"
-
--- dBusPath = "/user/xmonad/log"
--- dBusMember = "DynamicLogWithPP"
 
 myAddSpaces :: Int -> String -> String
 myAddSpaces len str = sstr ++ replicate (len - length sstr) ' '
@@ -254,13 +204,13 @@ myAddSpaces len str = sstr ++ replicate (len - length sstr) ' '
 myLogHook :: DBus.Client -> PP
 myLogHook dbus = def
     { ppOutput = dbusOutput dbus
-    , ppCurrent = wrap ("%{F" ++ blue2 ++ "} ") " %{F-}"
-    , ppVisible = wrap ("%{F" ++ blue ++ "} ") " %{F-}"
+    , ppCurrent = wrap (" [ %{F" ++ yellow ++ "}") "%{F-} ] "
+    , ppVisible = wrap ("%{F" ++ yellow ++ "} ") " %{F-}"
     , ppUrgent = wrap ("%{F" ++ red ++ "} ") " %{F-}"
     , ppHidden = wrap " " " "
     , ppWsSep = ""
     , ppSep = " | "
-    , ppTitle = myAddSpaces 25
+    , ppTitle =  wrap ("%{F" ++ green ++ "}") "%{F-}" . myAddSpaces 25
     }
 
 createDBusClient :: IO DBus.Client
@@ -286,30 +236,8 @@ dbusOutput dbus str = do
     interfaceName = DBus.interfaceName_ "org.xmonad.Log"
     memberName = DBus.memberName_ "Update"
 
--- signalToDBus :: DBus.Client -> String -> IO ()
--- signalToDBus client message =  do
---   let signal = (DBus.signal objectPath interfaceName memberName) {
---     DBus.signalBody = [DBus.toVariant $ decodeString message]
---   }
---   DBus.emit client signal
---   where
---     objectPath = DBus.objectPath_ dBusPath
---     interfaceName = DBus.interfaceName_ dBusInterface
---     memberName = DBus.memberName_ dBusMember
-
 startup :: X ()
 startup = return ()
--- startup = do
-  -- user <- liftIO $ getEnv "USER"
-  -- spawn $
-  --   unwords -- restart trayer on M-q
-  --     [ "killall -u " ++ user ++ " trayer;"
-  --     , "exec trayer --edge top --align right --SetDockType true"
-  --     , "--SetPartialStrut true --expand true --width 15 --transparent true"
-  --     , "--alpha 0 --tint 0x000000 --height 20 --distancefrom right --distance 750"
-  --     ]
-    --spawn "xsetroot -solid #888888"
-    --spawn "xloadimage -onroot -fullscreen <path.to.image>"
 
 gnomeRegister2
     :: MonadIO m

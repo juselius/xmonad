@@ -205,7 +205,7 @@ myLogHook :: DBus.Client -> PP
 myLogHook dbus = def
     { ppOutput = dbusOutput dbus
     , ppCurrent = wrap (" [ %{F" ++ yellow ++ "}") "%{F-} ] "
-    , ppVisible = wrap ("%{F" ++ yellow ++ "} ") " %{F-}"
+    , ppVisible = wrap ("%{F" ++ blue2 ++ "} ") " %{F-}"
     , ppUrgent = wrap ("%{F" ++ red ++ "} ") " %{F-}"
     , ppHidden = wrap " " " "
     , ppWsSep = ""

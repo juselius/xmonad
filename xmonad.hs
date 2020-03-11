@@ -172,9 +172,10 @@ myKeys =
                 [ "dbus-send --print-reply --dest=org.mpris.MediaPlayer2.spotify"
                 , "/org/mpris/MediaPlayer2 org.mpris.MediaPlayer2.Player.Previous"
                 ])
-        , ("S-M-s", spawn "flameshot gui")
+        , ("M-S-s", spawn "flameshot gui")
         , ("M-S-h", sendMessage MirrorExpand)
         , ("M-S-l", sendMessage MirrorShrink)
+        , ("C-S-l", spawn "xset s activate")
         ]
 
 green     = "#78ee26"

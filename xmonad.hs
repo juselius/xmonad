@@ -50,7 +50,7 @@ main = do
             --   , ppTitle = xmobarColor "green" "" . shorten 50
             --   }
             -- , urgencyHook = LibNotifyUrgencyHook
-            , terminal = "termite"
+            , terminal = "alacritty"
             , keys = myKeys <+> keys defaultConfig
             , borderWidth = 1
             , normalBorderColor = "gray"

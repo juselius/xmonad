@@ -50,7 +50,7 @@ main = do
             --   , ppTitle = xmobarColor "green" "" . shorten 50
             --   }
             -- , urgencyHook = LibNotifyUrgencyHook
-            , terminal = "termite"
+            , terminal = "alacritty"
             , keys = myKeys <+> keys defaultConfig
             , borderWidth = 1
             , normalBorderColor = "gray"
@@ -72,11 +72,11 @@ desktopLayouts =
         defLayout = desktopLayoutModifiers $
             smartBorders $ ResizableTall 1 (5/100) 0.5 [] ||| Full
         webLayout  = desktopLayoutModifiers $
-            smartBorders $ Full ||| Tall 1 (3/100) 0.65
+            smartBorders $ Tall 1 (3/100) 0.65 ||| Full
         fullLayout = desktopLayoutModifiers $
             noBorders $ Full ||| Mirror (Tall 1 (3/100) 0.8)
         mailLayout = desktopLayoutModifiers $
-            smartBorders $ Full ||| Tall 1 (3/100) 0.6
+            smartBorders $ Tall 1 (3/100) 0.7 ||| Full
         expLayout =
           desktopLayoutModifiers $
           smartBorders $
@@ -176,6 +176,7 @@ myKeys =
         , ("M-S-h", sendMessage MirrorExpand)
         , ("M-S-l", sendMessage MirrorShrink)
         , ("C-S-l", spawn "xset s activate")
+        , ("C-S-f", spawn "~/.local/bin/fix-cosound.sh")
         ]
 
 green     = "#78ee26"
